@@ -12,7 +12,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        toast("sdasd")
     }
 
     fun switchGaode (view: View) {
@@ -20,6 +19,14 @@ class MainActivity : AppCompatActivity() {
 //        val editText = findViewById(R.id.editText) as EditText
 //        val message = editText.text.toString()
 //        intent.putExtra(EXTRA_MESSAGE, message)
-        startActivity(intent)
+        startActivity(intent) //启动地图界面
+    }
+
+    fun switchLayout (view: View) {
+        val intent = Intent(this, LayoutTestActivity::class.java)
+//        val editText = findViewById(R.id.editText) as EditText
+//        val message = editText.text.toString()
+//        intent.putExtra(EXTRA_MESSAGE, message)
+        startActivity(intent) //启动地图界面
     }
 }

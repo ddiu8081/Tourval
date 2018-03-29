@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.Window
 import com.amap.api.maps.CameraUpdate
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.MyLocationStyle
@@ -61,9 +62,8 @@ class GaodeActivity : AppCompatActivity() {
         mUiSettings.isTiltGesturesEnabled = false //禁止倾斜手势
 
         // 地图状态设置
-//        val mCameraUpdate = CameraUpdateFactory //倾斜角度为0
-        aMap.moveCamera(CameraUpdateFactory.changeTilt(0f))
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(18f))
+        aMap.moveCamera(CameraUpdateFactory.changeTilt(0f)) //倾斜角度为0
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(18f)) //地图缩放比例
 
         aMap.setOnMyLocationChangeListener { location ->
             //当用户位置改变时回调的方法类。
