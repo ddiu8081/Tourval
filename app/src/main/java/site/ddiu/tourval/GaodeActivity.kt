@@ -5,18 +5,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.Window
-import com.amap.api.maps.CameraUpdate
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.MyLocationStyle
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_gaode.*
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import com.amap.api.maps.model.CameraPosition
-
-
 
 
 class GaodeActivity : AppCompatActivity() {
@@ -25,6 +21,9 @@ class GaodeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gaode)
+
+        QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
+
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         amapView.onCreate(savedInstanceState)
 
@@ -105,7 +104,6 @@ class GaodeActivity : AppCompatActivity() {
             }
 
         }
-        Log.d("assName","$moduleName/$PATH")
         amapView.map.setCustomMapStylePath("$moduleName/$PATH")
 
     }
