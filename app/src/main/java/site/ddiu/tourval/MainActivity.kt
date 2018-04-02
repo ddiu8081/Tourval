@@ -28,10 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun testFun (view: View) {
-        toast("fun1")
+        toast("fun16带动带7")
     }
 
-    fun testFun2 (view: View) {
-        toast("fun2")
-    }
 }

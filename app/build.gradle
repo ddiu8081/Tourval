@@ -3,14 +3,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
-ext.anko_version = '0.10.4'
 
 android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "site.ddiu.tourval"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -36,9 +35,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'cn.hchstudio:kpermissions:1.0.8'
-    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation "org.jetbrains.anko:anko-common:$anko_version"
     implementation 'com.amap.api:3dmap:latest.integration'
     implementation 'com.amap.api:search:latest.integration'
     implementation 'com.amap.api:location:latest.integration'
     implementation 'com.qmuiteam:qmui:1.0.6'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

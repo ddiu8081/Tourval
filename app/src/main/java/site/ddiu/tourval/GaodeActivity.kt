@@ -9,6 +9,8 @@ import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.MyLocationStyle
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_gaode.*
+import org.jetbrains.anko.act
+import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -23,6 +25,11 @@ class GaodeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_gaode)
 
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
+        QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
+        editText.top = QMUIStatusBarHelper.getStatusbarHeight(this)
+//        toast(QMUIStatusBarHelper.getStatusbarHeight(this).toString())
+        Log.d("BAR",QMUIStatusBarHelper.getStatusbarHeight(this).toString())
+
 
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         amapView.onCreate(savedInstanceState)
