@@ -9,7 +9,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "site.ddiu.tourval"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -35,10 +35,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'cn.hchstudio:kpermissions:1.0.8'
-    compile "org.jetbrains.anko:anko-commons:$anko_version"
-    compile 'com.amap.api:3dmap:latest.integration'
-    compile 'com.amap.api:search:latest.integration'
-    compile 'com.amap.api:location:latest.integration'
-    compile 'com.qmuiteam:qmui:1.0.6'
+    implementation 'cn.hchstudio:kpermissions:1.0.8'
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation 'com.amap.api:3dmap:latest.integration'
+    implementation 'com.amap.api:search:latest.integration'
+    implementation 'com.amap.api:location:latest.integration'
+    implementation 'com.qmuiteam:qmui:1.0.6'
 }

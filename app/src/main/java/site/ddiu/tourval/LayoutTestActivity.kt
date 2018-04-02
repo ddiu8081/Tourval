@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ListView
 import android.widget.SimpleAdapter
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import java.util.*
 
 
@@ -15,6 +16,8 @@ class LayoutTestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_layout_test)
+
+        QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
     }
 
     override fun onResume() {
