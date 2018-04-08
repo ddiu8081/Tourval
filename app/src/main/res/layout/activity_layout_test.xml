@@ -1,53 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="site.ddiu.tourval.LayoutTestActivity">
 
-    <com.qmuiteam.qmui.widget.QMUIAppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="256dp"
-        android:fitsSystemWindows="true">
-
-        <com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout
-            android:id="@+id/collapsing_topbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:qmui_collapsedTitleGravity="center"
-            app:qmui_contentScrim="?attr/qmui_config_color_blue"
-            app:qmui_expandedTitleGravity="center_horizontal|bottom"
-            app:qmui_expandedTitleMarginBottom="20dp"
-            app:qmui_statusBarScrim="?attr/qmui_config_color_blue">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="45678"
-                android:fitsSystemWindows="false"
-                android:scaleType="centerCrop"
-                android:src="@drawable/test"
-                app:qmui_layout_collapseMode="parallax"
-                app:qmui_layout_collapseParallaxMultiplier="0.7"/>
-
-            <com.qmuiteam.qmui.widget.QMUITopBar
-                android:id="@+id/topbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/qmui_topbar_height"
-                android:fitsSystemWindows="true"
-                app:qmui_layout_collapseMode="pin"
-                app:qmui_topbar_bg_color="@color/qmui_config_color_transparent"
-                app:qmui_topbar_need_separator="false"/>
-        </com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout>
-    </com.qmuiteam.qmui.widget.QMUIAppBarLayout>
-
-
     <ListView
         android:id="@+id/list_view_1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</android.support.design.widget.CoordinatorLayout>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="78dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/list_view_1"
+        app:layout_constraintStart_toStartOf="@+id/list_view_1" />
+</android.support.constraint.ConstraintLayout>

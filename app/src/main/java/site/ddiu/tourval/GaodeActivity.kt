@@ -10,7 +10,6 @@ import com.amap.api.maps.model.MyLocationStyle
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_gaode.*
 import org.jetbrains.anko.act
-import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -27,8 +26,11 @@ class GaodeActivity : AppCompatActivity() {
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
         editText.top = QMUIStatusBarHelper.getStatusbarHeight(this)
-//        toast(QMUIStatusBarHelper.getStatusbarHeight(this).toString())
         Log.d("BAR",QMUIStatusBarHelper.getStatusbarHeight(this).toString())
+
+        val intent = intent
+        val data = intent.getStringExtra("data")
+        editText.setText(data)
 
 
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
@@ -46,7 +48,7 @@ class GaodeActivity : AppCompatActivity() {
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE) //定位方式
 
         // 定位蓝圈设置
-        myLocationStyle.strokeColor(Color.parseColor("#000000")) //边缘颜色
+        myLocationStyle.strokeColor(Color.parseColor("#00000000")) //边缘颜色
         myLocationStyle.radiusFillColor(Color.parseColor("#33FEDFE1")) //区域颜色
         aMap.myLocationStyle = myLocationStyle //设置定位蓝点的Style
         aMap.isMyLocationEnabled = true //设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
@@ -73,8 +75,8 @@ class GaodeActivity : AppCompatActivity() {
 
         aMap.setOnMyLocationChangeListener { location ->
             //当用户位置改变时回调的方法类。
-            Log.d("location/latitude",location.latitude.toString())
-            Log.d("location/longitude",location.longitude.toString())
+//            Log.d("location/latitude",location.latitude.toString())
+//            Log.d("location/longitude",location.longitude.toString())
         }
     }
 
