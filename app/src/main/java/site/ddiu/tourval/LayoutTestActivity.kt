@@ -35,10 +35,6 @@ class LayoutTestActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        val lv = findViewById<ListView>(R.id.list_view_1)
-        val sa = SimpleAdapter(this,getData(),
-                R.layout.list_view_item, arrayOf("img","title"), intArrayOf(R.id.image_view_1,R.id.text_view_1))
-        lv.adapter = sa
     }
 
     private fun getData():List<Map<String,Any>> {

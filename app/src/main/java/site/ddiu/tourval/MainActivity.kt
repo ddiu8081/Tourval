@@ -12,20 +12,13 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
+import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
 
-    val items = listOf(
-            "给初学者的RxJava2.0教程（七）: Flowable",
-            "Android之View的诞生之谜",
-            "Android之自定义View的死亡三部曲之Measure",
-            "Using ThreadPoolExecutor in Android ",
-            "Kotlin 泛型定义与 Java 类似，但有着更多特性支持。",
-            "Android异步的姿势，你真的用对了吗？",
-            "Android 高质量录音库。",
-            "Android 边缘侧滑效果，支持多种场景下的侧滑退出。"
-    )
+    data class LocItem(val _id: String,
+                        val desc: String)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,15 +34,22 @@ class MainActivity : AppCompatActivity() {
             Log.i("kPermission", "permission---$it")
         })
 
-        like_list.layoutManager = LinearLayoutManager(this)
-        like_list.adapter = MainAdapter(items)
         initLike()
 
 
     }
 
-    fun initLike () {
+    private fun initLike () {
+        val list:MutableList<LocItem> = ArrayList ()
+        list.add(LocItem("123","给初学者的RxJava2.0教程: Flowable"))
+        list.add(LocItem("124","Using ThreadPoolExecutor in Android"))
+        list.add(LocItem("125","Android 高质量录音库。"))
+        list.add(LocItem("126","Android异步的姿势，你真的用对了吗？"))
 
+        like_list.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        like_list.adapter = MainAdapter(list) {
+            toast(it.desc)
+        }
     }
 
     fun switchGaode (view: View) {
