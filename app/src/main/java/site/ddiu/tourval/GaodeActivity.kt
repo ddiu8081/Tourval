@@ -14,6 +14,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import android.widget.LinearLayout
+
+
 
 
 class GaodeActivity : AppCompatActivity() {
@@ -27,6 +30,9 @@ class GaodeActivity : AppCompatActivity() {
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
         editText.top = QMUIStatusBarHelper.getStatusbarHeight(this)
         Log.d("BAR",QMUIStatusBarHelper.getStatusbarHeight(this).toString())
+//        val lp = editText.getLayoutParams() as LinearLayout.LayoutParams
+//        lp.topMargin = QMUIStatusBarHelper.getStatusbarHeight(this)
+//        editText.setLayoutParams(lp)
 
         val intent = intent
         val data = intent.getStringExtra("data")
@@ -48,8 +54,8 @@ class GaodeActivity : AppCompatActivity() {
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE) //定位方式
 
         // 定位蓝圈设置
-        myLocationStyle.strokeColor(Color.parseColor("#00000000")) //边缘颜色
-        myLocationStyle.radiusFillColor(Color.parseColor("#33FEDFE1")) //区域颜色
+        myLocationStyle.strokeColor(Color.parseColor("#66ffc408")) //边缘颜色
+        myLocationStyle.radiusFillColor(Color.parseColor("#11ffc408")) //区域颜色
         aMap.myLocationStyle = myLocationStyle //设置定位蓝点的Style
         aMap.isMyLocationEnabled = true //设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
         aMap.showMapText(false) //不显示地图标识

@@ -34,7 +34,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".GaodeActivity" />
-        <activity android:name=".LayoutTestActivity"></activity>
+        <activity android:name=".LayoutTestActivity" />
+        <activity android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

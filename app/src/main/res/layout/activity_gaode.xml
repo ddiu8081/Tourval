@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="site.ddiu.tourval.GaodeActivity">
 
+
     <com.amap.api.maps.MapView
         android:id="@+id/amapView"
         android:layout_width="match_parent"

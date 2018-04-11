@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context="site.ddiu.tourval.MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_marginBottom="44dp"
+        android:layout_marginEnd="180dp"
+        android:background="@drawable/oval"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/search_bar" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -139,7 +149,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="标签"
+        android:text="热门标签"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/like_list" />
@@ -157,56 +167,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:onClick="switchLayout"
-        android:text="LayoutTest"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_switch"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/btn_switch" />
+    <com.qmuiteam.qmui.widget.QMUIFloatLayout
+        android:id="@+id/qmuidemo_floatlayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:gravity="left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:qmui_childHorizontalSpacing="10dp"
+        app:qmui_childVerticalSpacing="15dp" />
 
     <Button
         android:id="@+id/btn_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginEnd="8dp"
         android:onClick="switchGaode"
         android:text="进入地图"
-        app:layout_constraintBottom_toTopOf="@+id/test1"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-        android:id="@+id/test1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:onClick="testFun"
-        android:paddingBottom="10dp"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="10dp"
-        android:text="RoundButton"
-        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:qmui_backgroundColor="#e16b8c"
-        app:qmui_borderColor="#e16b8c"
-        app:qmui_isRadiusAdjustBounds="true" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

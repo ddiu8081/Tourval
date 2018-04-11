@@ -21,8 +21,8 @@ class MainAdapter(val items : List<MainActivity.LocItem>, val itemClickListener:
 
     class ViewHolder(val view: View, val itemClickListener: (MainActivity.LocItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(item: MainActivity.LocItem) {
-            view.textView8.text = item._id
-            view.textView9.text = item.desc
+            view.loc_title.text = item._id
+            view.loc_desc.text = item.desc
             view.setOnClickListener {
                 itemClickListener(item)
             }

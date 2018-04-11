@@ -1,7 +1,10 @@
 package site.ddiu.tourval
 
 import android.Manifest
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -9,10 +12,21 @@ import android.util.Log
 import android.view.View
 import cn.hchstudio.kpermissions.KPermission
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import com.qmuiteam.qmui.widget.QMUIFloatLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
 import java.util.ArrayList
+import android.view.Gravity
+import android.view.ViewGroup
+import com.qmuiteam.qmui.util.QMUIDisplayHelper
+import android.support.v4.content.ContextCompat
+import android.util.TypedValue
+import android.widget.TextView
+
+
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,30 +50,67 @@ class MainActivity : AppCompatActivity() {
 
         initLike()
 
+        qmuidemo_floatlayout.gravity = Gravity.LEFT //floatLayout中子节点左对齐
+        qmuidemo_floatlayout.maxNumber = Int.MAX_VALUE
+        qmuidemo_floatlayout.maxLines = Integer.MAX_VALUE
+        addItemToFloadLayout(qmuidemo_floatlayout,"好吃不贵")
+        addItemToFloadLayout(qmuidemo_floatlayout,"离地铁线近")
+        addItemToFloadLayout(qmuidemo_floatlayout,"号")
+        addItemToFloadLayout(qmuidemo_floatlayout,"哈哈哈哈哈")
+        addItemToFloadLayout(qmuidemo_floatlayout,"啊啊")
+    }
 
+    private fun addItemToFloadLayout(floatLayout:QMUIFloatLayout, itemText:String) {
+        val currentChildCount = floatLayout.childCount
+
+        //自定义textview样式
+        val textView = TextView(this)
+        textView.setPadding(30, 15, 30, 15)
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
+        textView.setTextColor(Color.parseColor("#666666"))
+        textView.background = getDrawable(R.drawable.textview_border)
+        textView.text = itemText
+        val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        floatLayout.addView(textView, layoutParams)//将textview添加到floatLayout布局中
+        textView.setOnClickListener {
+            toast(textView.text)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+//        val oa:ObjectAnimator = ObjectAnimator.ofObject(btn_switch,"Text",StringEvaluator(),"1111111","222222","333333333")
+//        oa.duration = 5000
+//        oa.repeatCount = 2
+//        oa.repeatMode = ValueAnimator.RESTART
+//        oa.interpolator = MyInterplator()
+////        oa.addUpdateListener(ValueAnimator.AnimatorUpdateListener {
+////            btn_switch.text = it.getAnimatedValue().toString()
+////        })
+//
+//        oa.start()
     }
 
     private fun initLike () {
         val list:MutableList<LocItem> = ArrayList ()
-        list.add(LocItem("123","给初学者的RxJava2.0教程: Flowable"))
-        list.add(LocItem("124","Using ThreadPoolExecutor in Android"))
-        list.add(LocItem("125","Android 高质量录音库。"))
-        list.add(LocItem("126","Android异步的姿势，你真的用对了吗？"))
+        list.add(LocItem("玄武湖","这是第一条介绍"))
+        list.add(LocItem("中山陵","这是第二条介绍"))
+        list.add(LocItem("夫子庙","这是第三条介绍"))
+        list.add(LocItem("新街口","这是第四条介绍"))
 
         like_list.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         like_list.adapter = MainAdapter(list) {
             toast(it.desc)
+//            switchGaode(like_list)
+            val intent = Intent(this, GaodeActivity::class.java)
+            intent.putExtra("data","This is from MainActivity.")
+            startActivity(intent) //启动地图界面
         }
     }
 
     fun switchGaode (view: View) {
         val intent = Intent(this, GaodeActivity::class.java)
         intent.putExtra("data","This is from MainActivity.")
-        startActivity(intent) //启动地图界面
-    }
-
-    fun switchLayout (view: View) {
-        val intent = Intent(this, LayoutTestActivity::class.java)
         startActivity(intent) //启动地图界面
     }
 
