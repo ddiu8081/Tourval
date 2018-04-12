@@ -1,20 +1,25 @@
 package site.ddiu.tourval
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.MyLocationStyle
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
-import kotlinx.android.synthetic.main.activity_gaode.*
+import kotlinx.android.synthetic.main.activity_map.*
 import org.jetbrains.anko.act
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
-import android.widget.LinearLayout
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
+import com.iflytek.cloud.resource.Resource.setText
 
 
 
@@ -24,11 +29,10 @@ class GaodeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_gaode)
+        setContentView(R.layout.activity_map)
 
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
-        editText.top = QMUIStatusBarHelper.getStatusbarHeight(this)
         Log.d("BAR",QMUIStatusBarHelper.getStatusbarHeight(this).toString())
 //        val lp = editText.getLayoutParams() as LinearLayout.LayoutParams
 //        lp.topMargin = QMUIStatusBarHelper.getStatusbarHeight(this)
@@ -36,7 +40,6 @@ class GaodeActivity : AppCompatActivity() {
 
         val intent = intent
         val data = intent.getStringExtra("data")
-        editText.setText(data)
 
 
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
@@ -68,6 +71,7 @@ class GaodeActivity : AppCompatActivity() {
         val mUiSettings = aMap.uiSettings
         mUiSettings.isZoomControlsEnabled = false
         mUiSettings.isScaleControlsEnabled = true
+        mUiSettings.isMyLocationButtonEnabled = false //设置默认定位按钮是否显示，非必需设置。
 
         // 手势功能设置
         mUiSettings.isZoomGesturesEnabled = false //禁止缩放手势
@@ -79,10 +83,14 @@ class GaodeActivity : AppCompatActivity() {
         aMap.moveCamera(CameraUpdateFactory.changeTilt(0f)) //倾斜角度为0
         aMap.moveCamera(CameraUpdateFactory.zoomTo(18f)) //地图缩放比例
 
-        aMap.setOnMyLocationChangeListener { location ->
+        aMap.setOnMyLocationChangeListener {
             //当用户位置改变时回调的方法类。
 //            Log.d("location/latitude",location.latitude.toString())
-//            Log.d("location/longitude",location.longitude.toString())
+//            Log.d("location/longitude",location.longit ude.toString())
+            val simpleDateFormat = SimpleDateFormat("HH:mm:ss")// HH:mm:ss
+            val date = Date(System.currentTimeMillis())
+            val timenow = simpleDateFormat.format(date)
+            textView11.text = timenow+" lat:"+it.latitude.toString()+" long:"+it.longitude.toString()
         }
     }
 
@@ -141,5 +149,9 @@ class GaodeActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         amapView.onSaveInstanceState(outState)
+    }
+
+    fun speak (view: View) {
+        TTSUtils.getInstance().speak("在玄武门玄入口处的南边是“玄武晨曦”景点，东临玄武湖，西依明城墙，南面是水杉林，总面积约7000平方米。这里是集休闲、观景为一体的景点，游人可以在此赏山水城林之美，也是市民晨炼的好地方。")
     }
 }

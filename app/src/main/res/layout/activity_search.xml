@@ -39,7 +39,7 @@
                 android:paddingBottom="13dp"
                 android:paddingStart="8dp"
                 android:paddingTop="13dp"
-                app:srcCompat="@drawable/back" />
+                app:srcCompat="@drawable/back_dark" />
 
             <EditText
                 android:id="@+id/editText2"
@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:ems="10"
-                android:hint="input here"
+                android:hint="你要去哪里..."
                 android:inputType="textPersonName"
                 android:paddingStart="10dp" />
 

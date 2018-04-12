@@ -92,10 +92,8 @@ class MainActivity : AppCompatActivity() {
 
         like_list.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         like_list.adapter = MainAdapter(list) {
-            toast(it.desc)
-//            switchGaode(like_list)
-            val intent = Intent(this, GaodeActivity::class.java)
-            intent.putExtra("data","This is from MainActivity.")
+            val intent = Intent(this, PlaceInfoActivity::class.java)
+            intent.putExtra("data",it._id)
             startActivity(intent) //启动地图界面
         }
     }

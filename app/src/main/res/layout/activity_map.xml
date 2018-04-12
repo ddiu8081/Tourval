@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="site.ddiu.tourval.GaodeActivity">
+
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/amapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView_POIPic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.amap.api.maps.MapView>
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/amapView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+        android:id="@+id/QMUIRoundButton4"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="12dp"
+        android:text="收藏"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/QMUIRoundButton3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/QMUIRoundButton3"
+        app:qmui_backgroundColor="#eeffc408"
+        app:qmui_borderColor="#ffc408"
+        app:qmui_isRadiusAdjustBounds="true" />
+
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+        android:id="@+id/QMUIRoundButton3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:onClick="speak"
+        android:paddingBottom="12dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="12dp"
+        android:text="讲解 (0:35)"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/QMUIRoundButton4"
+        app:qmui_backgroundColor="#eeffc408"
+        app:qmui_borderColor="#ffc408"
+        app:qmui_isRadiusAdjustBounds="true" />
+
+    <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+        android:id="@+id/imageView_POIPic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="48dp"
+        android:layout_marginStart="24dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/test"
+        app:layout_constraintBottom_toTopOf="@+id/QMUIRoundButton4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:qmui_corner_radius="10dp"
+        app:qmui_is_circle="false" />
+
+    <TextView
+        android:id="@+id/textView_POITitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="玄武晨曦"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imageView_POIPic"
+        app:layout_constraintTop_toTopOf="@+id/imageView_POIPic" />
+
+    <TextView
+        android:id="@+id/textView_POIDesc"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="48dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="在玄武门玄入口处的南边是“玄武晨曦”景点，东临玄武湖，西依明城墙，南面是水杉林，总面积约7000平方米。这里是集休闲、观景为一体的景点，游人可以在此赏山水城林之美，也是市民晨炼的好地方。"
+        android:textColor="#999999"
+        app:layout_constraintBottom_toTopOf="@+id/QMUIRoundButton4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView_POIPic"
+        app:layout_constraintTop_toBottomOf="@+id/textView_POITitle" />
+
+</android.support.constraint.ConstraintLayout>
