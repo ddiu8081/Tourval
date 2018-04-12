@@ -47,7 +47,7 @@
             android:layout_height="50dp"
             android:alpha="1.0"
             android:background="@color/qmui_config_color_white"
-            android:onClick="switchGaode"
+            android:onClick="switchSearch"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -128,6 +128,7 @@
         android:text="查看更多"
         android:textColor="#C73E3A"
         android:textSize="18sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
@@ -163,6 +164,7 @@
         android:text="查看更多"
         android:textColor="#C73E3A"
         android:textSize="18sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView5" />
@@ -182,17 +184,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5"
         app:qmui_childHorizontalSpacing="10dp"
         app:qmui_childVerticalSpacing="15dp" />
-
-    <Button
-        android:id="@+id/btn_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="switchGaode"
-        android:text="进入地图"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

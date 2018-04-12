@@ -1,32 +1,24 @@
 package site.ddiu.tourval
 
 import android.Manifest
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import cn.hchstudio.kpermissions.KPermission
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.QMUIFloatLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
-import java.util.ArrayList
-import android.view.Gravity
-import android.view.ViewGroup
-import com.qmuiteam.qmui.util.QMUIDisplayHelper
-import android.support.v4.content.ContextCompat
-import android.util.TypedValue
-import android.widget.TextView
-
-
-
-
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,14 +45,14 @@ class MainActivity : AppCompatActivity() {
         qmuidemo_floatlayout.gravity = Gravity.LEFT //floatLayout中子节点左对齐
         qmuidemo_floatlayout.maxNumber = Int.MAX_VALUE
         qmuidemo_floatlayout.maxLines = Integer.MAX_VALUE
-        addItemToFloadLayout(qmuidemo_floatlayout,"好吃不贵")
-        addItemToFloadLayout(qmuidemo_floatlayout,"离地铁线近")
-        addItemToFloadLayout(qmuidemo_floatlayout,"号")
-        addItemToFloadLayout(qmuidemo_floatlayout,"哈哈哈哈哈")
-        addItemToFloadLayout(qmuidemo_floatlayout,"啊啊")
+        addItemToFloatLayout(qmuidemo_floatlayout,"好吃不贵")
+        addItemToFloatLayout(qmuidemo_floatlayout,"离地铁线近")
+        addItemToFloatLayout(qmuidemo_floatlayout,"号")
+        addItemToFloatLayout(qmuidemo_floatlayout,"哈哈哈哈哈")
+        addItemToFloatLayout(qmuidemo_floatlayout,"啊啊")
     }
 
-    private fun addItemToFloadLayout(floatLayout:QMUIFloatLayout, itemText:String) {
+    fun addItemToFloatLayout(floatLayout:QMUIFloatLayout, itemText:String) {
         val currentChildCount = floatLayout.childCount
 
         //自定义textview样式
@@ -108,8 +100,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun switchGaode (view: View) {
-        val intent = Intent(this, GaodeActivity::class.java)
+    fun switchSearch (view: View) {
+        val intent = Intent(this, SearchActivity::class.java)
         intent.putExtra("data","This is from MainActivity.")
         startActivity(intent) //启动地图界面
     }
