@@ -14,7 +14,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     //科大讯飞语音合成SDK
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,15 +26,23 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    //LeanCloud SDK
+    <!-- 基础模块（必须加入以下声明）START -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
+    <!-- 基础模块 END -->
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/QMUI.Compat.NoActionBar"
-        android:name=".XFApplication">
+        android:theme="@style/QMUI.Compat.NoActionBar">
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="6b7b7f4a723d84f56e11721c6f6fb92d" />
@@ -47,11 +54,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GaodeActivity" />
+        <activity android:name=".MapActivity" />
         <activity android:name=".LayoutTestActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".POIInfoActivity" />
-        <activity android:name=".PlaceInfoActivity"></activity>
+        <activity android:name=".PlaceInfoActivity" />
+        <activity android:name=".LoginActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

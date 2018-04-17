@@ -27,11 +27,19 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
-    sourceSets{
-        main{
+    sourceSets {
+        main {
             jniLibs.srcDir 'libs'
             //说明so的路径为该libs路径
         }
+    }
+    //为了解决部分第三方库重复打包了META-INF的问题
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -55,4 +63,9 @@ dependencies {
     implementation 'com.hyman:flowlayout-lib:1.1.2'
     implementation files('libs/Msc.jar')
     implementation files('libs/Sunflower.jar')
+    // LeanCloud 基础包
+    implementation('cn.leancloud.android:avoscloud-sdk:v4.6.4')
+    // avoscloud-sns：LeanCloud 第三方登录包
+    implementation('cn.leancloud.android:avoscloud-sns:v4.6.4@aar')
+    implementation('cn.leancloud.android:qq-sdk:1.6.1-leancloud')
 }

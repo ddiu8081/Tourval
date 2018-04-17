@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import cn.hchstudio.kpermissions.KPermission
+import com.avos.avoscloud.AVUser
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.QMUIFloatLayout
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         addItemToFloatLayout(qmuidemo_floatlayout,"号")
         addItemToFloatLayout(qmuidemo_floatlayout,"哈哈哈哈哈")
         addItemToFloatLayout(qmuidemo_floatlayout,"啊啊")
+
     }
 
     fun addItemToFloatLayout(floatLayout:QMUIFloatLayout, itemText:String) {
@@ -66,6 +68,17 @@ class MainActivity : AppCompatActivity() {
         floatLayout.addView(textView, layoutParams)//将textview添加到floatLayout布局中
         textView.setOnClickListener {
             toast(textView.text)
+        }
+
+        val currentUser = AVUser.getCurrentUser()
+        if (currentUser != null) {
+            // 跳转到首页
+            toast("已登录")
+        } else {
+            //缓存用户对象为空时，可打开用户注册界面…
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.putExtra("data","This is from MainActivity.")
+            startActivity(intent) //启动界面
         }
     }
 
@@ -98,14 +111,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun switchSearch (view: View) {
+    fun switchSearch(view: View) {
         val intent = Intent(this, SearchActivity::class.java)
         intent.putExtra("data","This is from MainActivity.")
         startActivity(intent) //启动地图界面
     }
 
-    fun testFun (view: View) {
+    fun testFun(view: View) {
         toast("testFun")
+        AVUser.logOut()// 清除缓存用户对象
+        val currentUser = AVUser.getCurrentUser()// 现在的 currentUser 是 null 了
     }
 
 }

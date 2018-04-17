@@ -27,7 +27,7 @@ public class TTSUtils implements InitListener, SynthesizerListener {
     }
     // 初始化合成对象
     public void init() {
-        mTts = SpeechSynthesizer.createSynthesizer(XFApplication.getContext(), this);
+        mTts = SpeechSynthesizer.createSynthesizer(MyApplication.getContext(), this);
         // 清空参数
         mTts.setParameter(SpeechConstant.PARAMS, null);
         // 设置在线云端

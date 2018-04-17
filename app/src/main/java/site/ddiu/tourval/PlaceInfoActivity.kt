@@ -32,7 +32,7 @@ class PlaceInfoActivity : AppCompatActivity() {
     }
 
     fun switchMap (view: View) {
-        val intent = Intent(this, GaodeActivity::class.java)
+        val intent = Intent(this, MapActivity::class.java)
         intent.putExtra("data","This is from MainActivity.")
         startActivity(intent) //启动地图界面
     }

@@ -1,13 +1,14 @@
 package site.ddiu.tourval
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.amap.api.maps.CameraUpdateFactory
+import com.amap.api.maps.model.LatLng
+import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.maps.model.MyLocationStyle
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_map.*
@@ -17,14 +18,10 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
-import com.iflytek.cloud.resource.Resource.setText
 
 
-
-
-class GaodeActivity : AppCompatActivity() {
+class MapActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,9 +31,6 @@ class GaodeActivity : AppCompatActivity() {
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
         Log.d("BAR",QMUIStatusBarHelper.getStatusbarHeight(this).toString())
-//        val lp = editText.getLayoutParams() as LinearLayout.LayoutParams
-//        lp.topMargin = QMUIStatusBarHelper.getStatusbarHeight(this)
-//        editText.setLayoutParams(lp)
 
         val intent = intent
         val data = intent.getStringExtra("data")
@@ -46,6 +40,10 @@ class GaodeActivity : AppCompatActivity() {
         amapView.onCreate(savedInstanceState)
 
         mapInit() //初始化
+
+        val aMap = amapView.map
+        val latLng = LatLng(32.108664,118.930319)
+        val marker = aMap.addMarker(MarkerOptions().position(latLng).title("北京").snippet("DefaultMarker"))
 
     }
 
