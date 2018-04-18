@@ -10,6 +10,10 @@ import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.LatLng
 import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.maps.model.MyLocationStyle
+import com.avos.avoscloud.AVException
+import com.avos.avoscloud.AVObject
+import com.avos.avoscloud.AVQuery
+import com.avos.avoscloud.FindCallback
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_map.*
 import org.jetbrains.anko.act
@@ -33,7 +37,7 @@ class MapActivity : AppCompatActivity() {
         Log.d("BAR",QMUIStatusBarHelper.getStatusbarHeight(this).toString())
 
         val intent = intent
-        val data = intent.getStringExtra("data")
+        val objectId = intent.getStringExtra("objectId")
 
 
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
@@ -41,9 +45,27 @@ class MapActivity : AppCompatActivity() {
 
         mapInit() //初始化
 
-        val aMap = amapView.map
-        val latLng = LatLng(32.108664,118.930319)
-        val marker = aMap.addMarker(MarkerOptions().position(latLng).title("北京").snippet("DefaultMarker"))
+
+
+        // 查询
+        val query:AVQuery<AVObject> = AVQuery("POIInfo")
+        query.whereEqualTo("placeId", objectId)
+        query.findInBackground(object :FindCallback<AVObject>() {
+            override fun done(list:List<AVObject> , e:AVException?) {
+                for (avObject in list) {
+                    val name = avObject.getString("Name")
+                    val desc = avObject.getString("desc")
+                    val poi = avObject.getAVGeoPoint("location")
+
+                    Log.d("NAME",name)
+                    Log.d("DESC",desc)
+                    // 标兴趣点
+                    val aMap = amapView.map
+                    val latLng = LatLng(poi.latitude,poi.longitude)
+                    val marker = aMap.addMarker(MarkerOptions().position(latLng).title(name).snippet(desc))
+                }
+            }
+        })
 
     }
 

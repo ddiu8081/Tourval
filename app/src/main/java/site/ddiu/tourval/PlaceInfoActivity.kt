@@ -1,17 +1,21 @@
 package site.ddiu.tourval
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.iflytek.cloud.*
+import com.avos.avoscloud.AVException
+import com.avos.avoscloud.AVObject
+import com.avos.avoscloud.AVQuery
+import com.avos.avoscloud.GetCallback
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_place_info.*
 import org.jetbrains.anko.act
 
 
 class PlaceInfoActivity : AppCompatActivity() {
+
+    private var objectId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,15 +29,22 @@ class PlaceInfoActivity : AppCompatActivity() {
         }
 
         val intent = intent
-        val data = intent.getStringExtra("data")
-        Log.d("ReceiveData",data)
-        textView_placeName.text = data
+        objectId = intent.getStringExtra("objectId")
+
+
+        val avQuery = AVQuery<AVObject>("PlaceInfo")
+        avQuery.getInBackground(objectId, object : GetCallback<AVObject>() {
+            override fun done(avObject: AVObject, e: AVException?) {
+                textView_placeName.text = avObject.getString("name")
+                textView_placeDesc.text = avObject.getString("desc")
+            }
+        })
 
     }
 
     fun switchMap (view: View) {
         val intent = Intent(this, MapActivity::class.java)
-        intent.putExtra("data","This is from MainActivity.")
+        intent.putExtra("objectId",objectId)
         startActivity(intent) //启动地图界面
     }
 

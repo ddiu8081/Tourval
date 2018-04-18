@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.list_view_item.view.*
 
-class MainAdapter(val items : List<MainActivity.LocItem>, val itemClickListener: (MainActivity.LocItem)->Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+class MainAdapter(val items : List<MainActivity.LocItem>, private val itemClickListener: (MainActivity.LocItem)->Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_view_item, parent, false)
@@ -19,9 +19,9 @@ class MainAdapter(val items : List<MainActivity.LocItem>, val itemClickListener:
         holder.bind(items[position])
     }
 
-    class ViewHolder(val view: View, val itemClickListener: (MainActivity.LocItem) -> Unit) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(val view: View, private val itemClickListener: (MainActivity.LocItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(item: MainActivity.LocItem) {
-            view.loc_title.text = item._id
+            view.loc_title.text = item.name
             view.loc_desc.text = item.desc
             view.setOnClickListener {
                 itemClickListener(item)
