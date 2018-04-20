@@ -28,6 +28,16 @@ class LoginActivity : AppCompatActivity() {
 
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
+        editText_phone.setOnClickListener {
+            if(isSentCode) {
+                // 更改按钮文字
+                btn_login.text = "下一步"
+
+                // 更改flag
+                code_layout.visibility = View.GONE
+                isSentCode = false
+            }
+        }
     }
 
     fun btnOnClick (view: View) {
@@ -51,7 +61,6 @@ class LoginActivity : AppCompatActivity() {
 
                         // 更改flag
                         code_layout.visibility = View.VISIBLE
-                        editText_phone.isEnabled = false
                         isSentCode = true
                     } else {
                         Log.d("SMS", "Send failed!")
@@ -64,13 +73,6 @@ class LoginActivity : AppCompatActivity() {
                         tipDialog.show()
                         btn_login.postDelayed({ tipDialog.dismiss() }, 1200)
 
-                        // 更改按钮文字
-                        btn_login.text = "进入"
-
-                        // 更改flag
-                        code_layout.visibility = View.VISIBLE
-                        editText_phone.isEnabled = false
-                        isSentCode = true
                     }
                 }
             })
@@ -79,16 +81,16 @@ class LoginActivity : AppCompatActivity() {
             var user_code = editText_code.text.toString()
             AVUser.signUpOrLoginByMobilePhoneInBackground(user_phone, user_code, object : LogInCallback<AVUser>() {
                 override fun done(avUser: AVUser?, e: AVException?) {
-                    // 更改按钮文字
-                    btn_login.text = "下一步"
-
-                    // 更改flag
-                    code_layout.visibility = View.GONE
-                    editText_phone.isEnabled = true
-                    isSentCode = false
 
                     // 如果 e 为空就可以表示登录成功了，并且 user 是一个全新的用户
                     if (e == null){
+                        // 更改按钮文字
+                        btn_login.text = "下一步"
+
+                        // 更改flag
+                        code_layout.visibility = View.GONE
+                        isSentCode = false
+
                         toast("登录成功")
 
                         val intent = Intent(act, MainActivity::class.java)

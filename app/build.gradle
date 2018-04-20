@@ -56,7 +56,7 @@ dependencies {
     implementation 'com.amap.api:3dmap:6.1.0'
     implementation 'com.amap.api:search:6.1.0'
     implementation 'com.amap.api:location:3.8.0'
-    implementation 'com.qmuiteam:qmui:1.0.6'
+    implementation 'com.qmuiteam:qmui:1.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.android.support:cardview-v7:27.0.1'
     implementation 'com.github.dmytrodanylyk.shadow-layout:library:1.0.3'

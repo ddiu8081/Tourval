@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
 
         var kPermission = KPermission(this) // 请求敏感权限
-        kPermission.requestPermission(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), {
+        kPermission.requestPermission(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.CHANGE_WIFI_STATE), {
             Log.i("kPermission", "isAllow---$it")
         }, {
             Log.i("kPermission", "permission---$it")
@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
     fun testFun(view: View) {
         toast("testFun")
         AVUser.logOut()// 清除缓存用户对象
-        val currentUser = AVUser.getCurrentUser()// 现在的 currentUser 是 null 了
+        AVUser.getCurrentUser()
     }
 
 }

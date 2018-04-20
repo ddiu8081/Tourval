@@ -40,26 +40,25 @@
         android:paddingTop="12dp"
         android:text="收藏"
         android:textColor="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/QMUIRoundButton3"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_read"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/QMUIRoundButton3"
+        app:layout_constraintTop_toTopOf="@+id/btn_read"
         app:qmui_backgroundColor="#eeffc408"
         app:qmui_borderColor="#ffc408"
         app:qmui_isRadiusAdjustBounds="true" />
 
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-        android:id="@+id/QMUIRoundButton3"
+        android:id="@+id/btn_read"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="16dp"
-        android:onClick="speak"
         android:paddingBottom="12dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="12dp"
-        android:text="讲解 (0:35)"
+        android:text="讲解"
         android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="玄武晨曦"
+        android:text="POITitle"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageView_POIPic"
         app:layout_constraintTop_toTopOf="@+id/imageView_POIPic" />
@@ -99,11 +98,12 @@
         android:layout_marginEnd="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="在玄武门玄入口处的南边是“玄武晨曦”景点，东临玄武湖，西依明城墙，南面是水杉林，总面积约7000平方米。这里是集休闲、观景为一体的景点，游人可以在此赏山水城林之美，也是市民晨炼的好地方。"
+        android:text="POIInfo"
         android:textColor="#999999"
         app:layout_constraintBottom_toTopOf="@+id/QMUIRoundButton4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView_POIPic"
         app:layout_constraintTop_toBottomOf="@+id/textView_POITitle" />
+
 
 </android.support.constraint.ConstraintLayout>

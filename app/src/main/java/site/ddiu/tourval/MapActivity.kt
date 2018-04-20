@@ -5,15 +5,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.View
+import com.amap.api.maps.AMapUtils
 import com.amap.api.maps.CameraUpdateFactory
 import com.amap.api.maps.model.LatLng
 import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.maps.model.MyLocationStyle
-import com.avos.avoscloud.AVException
-import com.avos.avoscloud.AVObject
-import com.avos.avoscloud.AVQuery
-import com.avos.avoscloud.FindCallback
+import com.avos.avoscloud.*
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_map.*
 import org.jetbrains.anko.act
@@ -42,10 +39,7 @@ class MapActivity : AppCompatActivity() {
 
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
         amapView.onCreate(savedInstanceState)
-
         mapInit() //初始化
-
-
 
         // 查询
         val query:AVQuery<AVObject> = AVQuery("POIInfo")
@@ -106,11 +100,37 @@ class MapActivity : AppCompatActivity() {
         aMap.setOnMyLocationChangeListener {
             //当用户位置改变时回调的方法类。
 //            Log.d("location/latitude",location.latitude.toString())
-//            Log.d("location/longitude",location.longit ude.toString())
+//            Log.d("location/longitude",location.longitude.toString())
             val simpleDateFormat = SimpleDateFormat("HH:mm:ss")// HH:mm:ss
             val date = Date(System.currentTimeMillis())
             val timenow = simpleDateFormat.format(date)
             textView11.text = timenow+" lat:"+it.latitude.toString()+" long:"+it.longitude.toString()
+
+            // 开始查询附近的兴趣点
+            val query:AVQuery<AVObject> = AVQuery("POIInfo")
+            val myLocation = AVGeoPoint(it.latitude, it.longitude)
+            query.whereWithinKilometers("location",myLocation,0.035)
+            query.getFirstInBackground(object : GetCallback<AVObject>() {
+                override fun done(avObject: AVObject, e: AVException?) {
+                    // object 就是符合条件的第一个 AVObject
+                    val name = avObject.getString("Name")
+                    val desc = avObject.getString("desc")
+                    val poi = avObject.getAVGeoPoint("location")
+
+                    Log.d("NAME",name)
+                    Log.d("DESC",desc)
+
+                    // 标兴趣点
+                    textView_POITitle.text = name
+                    textView_POIDesc.text = desc
+
+                    btn_read.setOnClickListener {
+                        TTSUtils.getInstance().speak(desc)
+                    }
+                    val distance = AMapUtils.calculateLineDistance(LatLng(it.latitude,it.longitude), LatLng(poi.latitude,poi.longitude))
+//                    btn_read.text = distance.toString()
+                }
+            })
         }
     }
 
@@ -169,9 +189,5 @@ class MapActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         amapView.onSaveInstanceState(outState)
-    }
-
-    fun speak (view: View) {
-        TTSUtils.getInstance().speak("在玄武门玄入口处的南边是“玄武晨曦”景点，东临玄武湖，西依明城墙，南面是水杉林，总面积约7000平方米。这里是集休闲、观景为一体的景点，游人可以在此赏山水城林之美，也是市民晨炼的好地方。")
     }
 }

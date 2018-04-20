@@ -38,6 +38,11 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
+        editText_search.setFocusable(true);
+        editText_search.setFocusableInTouchMode(true);
+        editText_search.requestFocus()
+
+
     }
 
     fun addItemToFloatLayout(floatLayout: QMUIFloatLayout, itemText:String) {
