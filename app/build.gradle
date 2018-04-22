@@ -68,4 +68,5 @@ dependencies {
     // avoscloud-sns：LeanCloud 第三方登录包
     implementation('cn.leancloud.android:avoscloud-sns:v4.6.4@aar')
     implementation('cn.leancloud.android:qq-sdk:1.6.1-leancloud')
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

@@ -11,6 +11,13 @@ import com.avos.avoscloud.GetCallback
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import kotlinx.android.synthetic.main.activity_place_info.*
 import org.jetbrains.anko.act
+import android.graphics.BitmapFactory
+import android.graphics.Bitmap
+import com.squareup.picasso.Picasso
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
 
 
 class PlaceInfoActivity : AppCompatActivity() {
@@ -37,6 +44,7 @@ class PlaceInfoActivity : AppCompatActivity() {
             override fun done(avObject: AVObject, e: AVException?) {
                 textView_placeName.text = avObject.getString("name")
                 textView_placeDesc.text = avObject.getString("desc")
+                Picasso.get().load(avObject.getString("imgSrc")).into(imageView_placePic);
             }
         })
 

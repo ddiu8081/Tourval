@@ -15,6 +15,11 @@
     <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <!--科大讯飞语音合成SDK-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -64,6 +69,8 @@
         <activity android:name=".PlaceInfoActivity" />
         <activity android:name=".LoginActivity"
             android:launchMode="singleTask" />
+
+        <service android:name="com.amap.api.location.APSService" />
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import cn.hchstudio.kpermissions.KPermission
+import com.amap.api.location.AMapLocation
 import com.avos.avoscloud.*
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.QMUIFloatLayout
@@ -20,11 +21,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
 import java.util.*
+import com.amap.api.location.AMapLocationClientOption
+import com.amap.api.location.AMapLocationClient
+import com.amap.api.location.AMapLocationListener
+import com.amap.api.maps.AMapUtils
+import com.amap.api.maps.model.LatLng
+import java.text.DecimalFormat
 
 
 class MainActivity : AppCompatActivity() {
 
-    data class LocItem(val objectId: String, val name: String, val desc: String, val location: AVGeoPoint)
+    data class LocItem(val objectId: String, val name: String, val desc: String, val location: AVGeoPoint, val distance: String)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
 
         var kPermission = KPermission(this) // 请求敏感权限
-        kPermission.requestPermission(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.CHANGE_WIFI_STATE), {
+        kPermission.requestPermission(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE), {
             Log.i("kPermission", "isAllow---$it")
         }, {
             Log.i("kPermission", "permission---$it")
@@ -52,8 +59,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent) //启动界面
         }
 
-        initLike() // 初始化 猜你喜欢 栏目
+        GdLocation.getCurrentLocation {
+            Log.d("GaodeLocation",it.address)
+            val myLoc = it
+            initLike(myLoc) // 初始化 猜你喜欢 栏目
+        }
+
         initTags() // 初始化 热门标签 栏目
+
+
     }
 
     private fun addItemToFloatLayout(floatLayout:QMUIFloatLayout, itemText:String) {
@@ -84,21 +98,7 @@ class MainActivity : AppCompatActivity() {
         addItemToFloatLayout(qmuidemo_floatlayout,"啊啊")
     }
 
-    override fun onStart() {
-        super.onStart()
-//        val oa:ObjectAnimator = ObjectAnimator.ofObject(btn_switch,"Text",StringEvaluator(),"1111111","222222","333333333")
-//        oa.duration = 5000
-//        oa.repeatCount = 2
-//        oa.repeatMode = ValueAnimator.RESTART
-//        oa.interpolator = MyInterplator()
-////        oa.addUpdateListener(ValueAnimator.AnimatorUpdateListener {
-////            btn_switch.text = it.getAnimatedValue().toString()
-////        })
-//
-//        oa.start()
-    }
-
-    private fun initLike () {
+    private fun initLike (myLoc: AMapLocation) {
         val likeList:MutableList<LocItem> = ArrayList ()
 
         // 查询
@@ -111,12 +111,27 @@ class MainActivity : AppCompatActivity() {
                     val name = avObject.getString("name")
                     val desc = avObject.getString("desc")
                     val poi = avObject.getAVGeoPoint("location")
+//                    val distance = "12345"
+                    val distance_f = AMapUtils.calculateLineDistance(LatLng(myLoc.latitude,myLoc.longitude), LatLng(poi.latitude,poi.longitude))
+
+                    var distance = ""
+                    if (distance_f < 1000) {
+                        val dFormat = DecimalFormat("0")
+                        distance = dFormat.format(distance_f).toString() + "m"
+                    }
+                    else {
+                        val dFormat = DecimalFormat(".0")
+                        distance = dFormat.format(distance_f/1000).toString() + "km"
+                    }
+
 
                     Log.d("OBJECTID",objectId)
                     Log.d("NAME",name)
                     Log.d("DESC",desc)
+                    Log.d("MYLOC",myLoc.poiName)
+                    Log.d("DISTANCE",distance)
 
-                    likeList.add(LocItem(objectId,name,desc,poi))
+                    likeList.add(LocItem(objectId,name,desc,poi,distance))
                 }
                 like_list.layoutManager = LinearLayoutManager(act,LinearLayoutManager.HORIZONTAL,false)
                 like_list.adapter = MainAdapter(likeList) {

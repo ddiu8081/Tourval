@@ -67,7 +67,7 @@ class MapActivity : AppCompatActivity() {
         val aMap = amapView.map
 
         val myLocationStyle = MyLocationStyle()
-        myLocationStyle.interval(1000) //定位间隔
+        myLocationStyle.interval(2000) //定位间隔
         myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_MAP_ROTATE) //定位方式
 
         // 定位蓝圈设置
@@ -78,8 +78,8 @@ class MapActivity : AppCompatActivity() {
         aMap.showMapText(false) //不显示地图标识
 
         // 自定义地图风格
-        setMapCustomFile(this, "style.data")
-        aMap.setMapCustomEnable(true)
+//        setMapCustomFile(this, "style.data")
+//        aMap.setMapCustomEnable(true)
 
         // UI调整
         val mUiSettings = aMap.uiSettings
@@ -88,10 +88,10 @@ class MapActivity : AppCompatActivity() {
         mUiSettings.isMyLocationButtonEnabled = false //设置默认定位按钮是否显示，非必需设置。
 
         // 手势功能设置
-        mUiSettings.isZoomGesturesEnabled = false //禁止缩放手势
-        mUiSettings.isScrollGesturesEnabled = false //禁止滑动手势
-        mUiSettings.isRotateGesturesEnabled = false //禁止旋转手势
-        mUiSettings.isTiltGesturesEnabled = false //禁止倾斜手势
+//        mUiSettings.isZoomGesturesEnabled = false //禁止缩放手势
+//        mUiSettings.isScrollGesturesEnabled = false //禁止滑动手势
+//        mUiSettings.isRotateGesturesEnabled = false //禁止旋转手势
+//        mUiSettings.isTiltGesturesEnabled = false //禁止倾斜手势
 
         // 地图状态设置
         aMap.moveCamera(CameraUpdateFactory.changeTilt(0f)) //倾斜角度为0
@@ -109,30 +109,42 @@ class MapActivity : AppCompatActivity() {
             // 开始查询附近的兴趣点
             val query:AVQuery<AVObject> = AVQuery("POIInfo")
             val myLocation = AVGeoPoint(it.latitude, it.longitude)
-            query.whereWithinKilometers("location",myLocation,0.035)
+            query.whereWithinKilometers("location",myLocation,0.04)
             query.getFirstInBackground(object : GetCallback<AVObject>() {
-                override fun done(avObject: AVObject, e: AVException?) {
-                    // object 就是符合条件的第一个 AVObject
-                    val name = avObject.getString("Name")
-                    val desc = avObject.getString("desc")
-                    val poi = avObject.getAVGeoPoint("location")
+                override fun done(avObject: AVObject?, e: AVException?) {
+                    if (avObject != null) {
+                        // object 就是符合条件的第一个 AVObject
+                        val name = avObject.getString("Name")
+                        val desc = avObject.getString("desc")
+                        val poi = avObject.getAVGeoPoint("location")
 
-                    Log.d("NAME",name)
-                    Log.d("DESC",desc)
+                        Log.d("NAME",name)
+                        Log.d("DESC",desc)
 
-                    // 标兴趣点
-                    textView_POITitle.text = name
-                    textView_POIDesc.text = desc
+                        // 标兴趣点
+                        textView_POITitle.text = name
+                        textView_POIDesc.text = desc
 
-                    btn_read.setOnClickListener {
-                        TTSUtils.getInstance().speak(desc)
-                    }
-                    val distance = AMapUtils.calculateLineDistance(LatLng(it.latitude,it.longitude), LatLng(poi.latitude,poi.longitude))
+
+                        btn_read.setOnClickListener {
+                            TTSUtils.getInstance().speak(desc)
+                        }
+                        if (!TTSUtils.getInstance().isSpeaking) {
+                            TTSUtils.getInstance().speak(desc)
+                        }
+
+                        val distance = AMapUtils.calculateLineDistance(LatLng(it.latitude,it.longitude), LatLng(poi.latitude,poi.longitude))
 //                    btn_read.text = distance.toString()
+                    }
                 }
             })
         }
     }
+
+//    override fun TTSUtils.onBufferProgress(percent:Int, beginPos:Int, endPos:Int, info:String) {
+//        // 合成进度
+//        btn_read.text = percent.toString() + "%"
+//    }
 
     private fun setMapCustomFile(context: Context, PATH: String) {
         var out: FileOutputStream? = null

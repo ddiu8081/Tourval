@@ -22,7 +22,7 @@ class MainAdapter(val items : List<MainActivity.LocItem>, private val itemClickL
     class ViewHolder(val view: View, private val itemClickListener: (MainActivity.LocItem) -> Unit) : RecyclerView.ViewHolder(view) {
         fun bind(item: MainActivity.LocItem) {
             view.loc_title.text = item.name
-            view.loc_desc.text = item.desc
+            view.loc_desc.text = item.distance
             view.setOnClickListener {
                 itemClickListener(item)
             }

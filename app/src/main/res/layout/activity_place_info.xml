@@ -24,8 +24,7 @@
                 android:id="@+id/imageView_placePic"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/test" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/textView_placeName"
