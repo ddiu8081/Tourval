@@ -99,13 +99,13 @@
             app:srcCompat="@drawable/location" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/textView_myLoc"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="4dp"
             android:layout_weight="1"
             android:gravity="center_horizontal|center"
-            android:text="当前位置：夫子庙"
+            android:text="当前位置"
             android:textColor="#cccccc" />
     </LinearLayout>
 

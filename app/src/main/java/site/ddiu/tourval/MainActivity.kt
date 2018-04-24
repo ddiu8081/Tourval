@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("GaodeLocation",it.address)
             val myLoc = it
             initLike(myLoc) // 初始化 猜你喜欢 栏目
+            textView_myLoc.text = "当前位置：" + it.address
         }
 
         initTags() // 初始化 热门标签 栏目
