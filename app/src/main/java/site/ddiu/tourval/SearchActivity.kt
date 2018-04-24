@@ -1,8 +1,10 @@
 package site.ddiu.tourval
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
@@ -19,6 +21,9 @@ import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
 import java.util.*
+import android.support.v7.widget.DividerItemDecoration
+
+
 
 
 class SearchActivity : AppCompatActivity() {
@@ -71,7 +76,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     fun search(view: View) {
-        val seacrchQueryList:MutableList<MainActivity.LocItem> = ArrayList ()
+        val searchQueryList:MutableList<MainActivity.LocItem> = ArrayList ()
         val searchText = editText_search.text.toString()
         val query = AVQuery<AVObject>("PlaceInfo")
         query.whereContains("name", searchText)
@@ -88,14 +93,25 @@ class SearchActivity : AppCompatActivity() {
                     Log.d("NAME",name)
                     Log.d("DESC",desc)
 
-                    seacrchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, distance))
+                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, distance))
                 }
-//                like_list.layoutManager = LinearLayoutManager(act, LinearLayoutManager.HORIZONTAL,false)
-//                like_list.adapter = MainAdapter(likeList) {
-//                    val intent = Intent(act, PlaceInfoActivity::class.java)
-//                    intent.putExtra("objectId",it.objectId)
-//                    startActivity(intent) //启动地图界面
-//                }
+                if (list.isEmpty()) {
+                    toast("没有结果")
+                    historySearch_view.visibility = View.VISIBLE
+                    searchResult_view.visibility = View.GONE
+                }
+                else {
+                    toast("搜索到" + list.size + "条结果")
+                    historySearch_view.visibility = View.GONE
+                    searchResult_view.visibility = View.VISIBLE
+                }
+                searchResult_list.layoutManager = LinearLayoutManager(act, LinearLayoutManager.VERTICAL,false)
+                searchResult_list.adapter = SearchResultAdapter(searchQueryList) {
+                    val intent = Intent(act, PlaceInfoActivity::class.java)
+                    intent.putExtra("objectId",it.objectId)
+                    startActivity(intent) //启动地图界面
+                }
+                searchResult_list.addItemDecoration(DividerItemDecoration(act, DividerItemDecoration.VERTICAL))
             }
         })
     }

@@ -112,14 +112,12 @@ class MainActivity : AppCompatActivity() {
 //                    val distance = "12345"
                     val distance_f = AMapUtils.calculateLineDistance(LatLng(myLoc.latitude,myLoc.longitude), LatLng(poi.latitude,poi.longitude))
 
-                    var distance = ""
-                    if (distance_f < 1000) {
+                    val distance = if (distance_f < 1000) {
                         val dFormat = DecimalFormat("0")
-                        distance = dFormat.format(distance_f).toString() + "m"
-                    }
-                    else {
+                        dFormat.format(distance_f).toString() + "m"
+                    } else {
                         val dFormat = DecimalFormat(".0")
-                        distance = dFormat.format(distance_f/1000).toString() + "km"
+                        dFormat.format(distance_f/1000).toString() + "km"
                     }
 
 
@@ -139,7 +137,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
 
     }
 

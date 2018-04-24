@@ -127,7 +127,7 @@ class MapActivity : AppCompatActivity() {
                         // 标兴趣点
                         textView_POITitle.text = name
                         textView_POIDesc.text = desc
-                        Picasso.get().load(imgSrc).error(R.drawable.lx).placeholder(R.drawable.lx).into(imageView_POIPic)
+                        Picasso.get().load(imgSrc).error(R.drawable.nopic).placeholder(R.drawable.nopic).into(imageView_POIPic)
 
 
                         btn_read.setOnClickListener {
