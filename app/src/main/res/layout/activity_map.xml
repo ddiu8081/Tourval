@@ -14,8 +14,10 @@
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toTopOf="@+id/imageView_POIPic"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
     </com.amap.api.maps.MapView>
 
@@ -74,7 +76,6 @@
         android:layout_marginBottom="48dp"
         android:layout_marginStart="24dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/test"
         app:layout_constraintBottom_toTopOf="@+id/QMUIRoundButton4"
         app:layout_constraintStart_toStartOf="parent"
         app:qmui_corner_radius="10dp"

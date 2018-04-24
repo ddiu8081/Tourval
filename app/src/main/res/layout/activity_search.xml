@@ -56,6 +56,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
+                android:onClick="search"
                 android:paddingBottom="13dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"

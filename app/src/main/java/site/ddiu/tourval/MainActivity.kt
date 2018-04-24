@@ -21,9 +21,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
 import java.util.*
-import com.amap.api.location.AMapLocationClientOption
-import com.amap.api.location.AMapLocationClient
-import com.amap.api.location.AMapLocationListener
 import com.amap.api.maps.AMapUtils
 import com.amap.api.maps.model.LatLng
 import java.text.DecimalFormat
@@ -91,11 +88,12 @@ class MainActivity : AppCompatActivity() {
         qmuidemo_floatlayout.gravity = Gravity.LEFT //floatLayout中子节点左对齐
         qmuidemo_floatlayout.maxNumber = Int.MAX_VALUE
         qmuidemo_floatlayout.maxLines = Integer.MAX_VALUE
-        addItemToFloatLayout(qmuidemo_floatlayout,"好吃不贵")
-        addItemToFloatLayout(qmuidemo_floatlayout,"离地铁线近")
-        addItemToFloatLayout(qmuidemo_floatlayout,"号")
-        addItemToFloatLayout(qmuidemo_floatlayout,"哈哈哈哈哈")
-        addItemToFloatLayout(qmuidemo_floatlayout,"啊啊")
+        addItemToFloatLayout(qmuidemo_floatlayout,"地铁沿线")
+        addItemToFloatLayout(qmuidemo_floatlayout,"山水")
+        addItemToFloatLayout(qmuidemo_floatlayout,"自然")
+        addItemToFloatLayout(qmuidemo_floatlayout,"人文")
+        addItemToFloatLayout(qmuidemo_floatlayout,"历史")
+        addItemToFloatLayout(qmuidemo_floatlayout,"春游景点")
     }
 
     private fun initLike (myLoc: AMapLocation) {

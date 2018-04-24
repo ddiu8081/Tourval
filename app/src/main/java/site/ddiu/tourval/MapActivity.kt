@@ -12,6 +12,7 @@ import com.amap.api.maps.model.MarkerOptions
 import com.amap.api.maps.model.MyLocationStyle
 import com.avos.avoscloud.*
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map.*
 import org.jetbrains.anko.act
 import java.io.File
@@ -24,6 +25,7 @@ import java.util.*
 
 class MapActivity : AppCompatActivity() {
 
+    var thisObjectId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,6 @@ class MapActivity : AppCompatActivity() {
 
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
-        Log.d("BAR",QMUIStatusBarHelper.getStatusbarHeight(this).toString())
 
         val intent = intent
         val objectId = intent.getStringExtra("objectId")
@@ -47,7 +48,7 @@ class MapActivity : AppCompatActivity() {
         query.findInBackground(object :FindCallback<AVObject>() {
             override fun done(list:List<AVObject> , e:AVException?) {
                 for (avObject in list) {
-                    val name = avObject.getString("Name")
+                    val name = avObject.getString("name")
                     val desc = avObject.getString("desc")
                     val poi = avObject.getAVGeoPoint("location")
 
@@ -112,11 +113,13 @@ class MapActivity : AppCompatActivity() {
             query.whereWithinKilometers("location",myLocation,0.04)
             query.getFirstInBackground(object : GetCallback<AVObject>() {
                 override fun done(avObject: AVObject?, e: AVException?) {
-                    if (avObject != null) {
+                    if (avObject != null && thisObjectId != avObject.objectId) {
                         // object 就是符合条件的第一个 AVObject
-                        val name = avObject.getString("Name")
+                        thisObjectId = avObject.objectId // 获取当前POI的objectId
+                        val name = avObject.getString("name")
                         val desc = avObject.getString("desc")
                         val poi = avObject.getAVGeoPoint("location")
+                        val imgSrc = avObject.getString("imgSrc")
 
                         Log.d("NAME",name)
                         Log.d("DESC",desc)
@@ -124,14 +127,14 @@ class MapActivity : AppCompatActivity() {
                         // 标兴趣点
                         textView_POITitle.text = name
                         textView_POIDesc.text = desc
+                        Picasso.get().load(imgSrc).error(R.drawable.lx).placeholder(R.drawable.lx).into(imageView_POIPic)
 
 
                         btn_read.setOnClickListener {
                             TTSUtils.getInstance().speak(desc)
                         }
-                        if (!TTSUtils.getInstance().isSpeaking) {
-                            TTSUtils.getInstance().speak(desc)
-                        }
+
+                        TTSUtils.getInstance().speak(desc)
 
                         val distance = AMapUtils.calculateLineDistance(LatLng(it.latitude,it.longitude), LatLng(poi.latitude,poi.longitude))
 //                    btn_read.text = distance.toString()

@@ -1,17 +1,25 @@
 package site.ddiu.tourval
 
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.avos.avoscloud.AVException
+import com.avos.avoscloud.AVObject
+import com.avos.avoscloud.AVQuery
+import com.avos.avoscloud.FindCallback
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.QMUIFloatLayout
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
+import java.util.*
+
 
 class SearchActivity : AppCompatActivity() {
 
@@ -60,5 +68,35 @@ class SearchActivity : AppCompatActivity() {
         textView.setOnClickListener {
             toast(textView.text)
         }
+    }
+
+    fun search(view: View) {
+        val seacrchQueryList:MutableList<MainActivity.LocItem> = ArrayList ()
+        val searchText = editText_search.text.toString()
+        val query = AVQuery<AVObject>("PlaceInfo")
+        query.whereContains("name", searchText)
+        query.findInBackground(object : FindCallback<AVObject>() {
+            override fun done(list:List<AVObject> , e: AVException?) {
+                for (avObject in list) {
+                    val objectId = avObject.objectId
+                    val name = avObject.getString("name")
+                    val desc = avObject.getString("desc")
+                    val poi = avObject.getAVGeoPoint("location")
+                    val distance = ""
+
+                    Log.d("OBJECTID",objectId)
+                    Log.d("NAME",name)
+                    Log.d("DESC",desc)
+
+                    seacrchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, distance))
+                }
+//                like_list.layoutManager = LinearLayoutManager(act, LinearLayoutManager.HORIZONTAL,false)
+//                like_list.adapter = MainAdapter(likeList) {
+//                    val intent = Intent(act, PlaceInfoActivity::class.java)
+//                    intent.putExtra("objectId",it.objectId)
+//                    startActivity(intent) //启动地图界面
+//                }
+            }
+        })
     }
 }

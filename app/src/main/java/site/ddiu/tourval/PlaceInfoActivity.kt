@@ -44,7 +44,7 @@ class PlaceInfoActivity : AppCompatActivity() {
             override fun done(avObject: AVObject, e: AVException?) {
                 textView_placeName.text = avObject.getString("name")
                 textView_placeDesc.text = avObject.getString("desc")
-                Picasso.get().load(avObject.getString("imgSrc")).into(imageView_placePic);
+                Picasso.get().load(avObject.getString("imgSrc")).into(imageView_placePic)
             }
         })
 
