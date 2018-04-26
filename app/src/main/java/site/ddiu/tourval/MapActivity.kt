@@ -131,10 +131,18 @@ class MapActivity : AppCompatActivity() {
 
 
                         btn_read.setOnClickListener {
-                            TTSUtils.getInstance().speak(desc)
+                            if(TTSUtils.getInstance().isSpeaking) {
+                                TTSUtils.getInstance().stop()
+                                btn_read.text = "播放"
+                            }
+                            else {
+                                TTSUtils.getInstance().speak(desc)
+                                btn_read.text = "停止"
+                            }
                         }
 
                         TTSUtils.getInstance().speak(desc)
+                        btn_read.text = "停止"
 
                         val distance = AMapUtils.calculateLineDistance(LatLng(it.latitude,it.longitude), LatLng(poi.latitude,poi.longitude))
 //                    btn_read.text = distance.toString()

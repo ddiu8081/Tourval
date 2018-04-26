@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             Log.d("GaodeLocation",it.address)
             val myLoc = it
             initLike(myLoc) // 初始化 猜你喜欢 栏目
-            textView_myLoc.text = "当前位置：" + it.address
+//            textView_myLoc.text = "当前位置：" + it.address
         }
 
         initTags() // 初始化 热门标签 栏目
@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLike (myLoc: AMapLocation) {
         val likeList:MutableList<LocItem> = ArrayList ()
+        var isNear = false
 
         // 查询
         val query: AVQuery<AVObject> = AVQuery("PlaceInfo")
@@ -112,6 +113,16 @@ class MainActivity : AppCompatActivity() {
                     val poi = avObject.getAVGeoPoint("location")
 //                    val distance = "12345"
                     val distance_f = AMapUtils.calculateLineDistance(LatLng(myLoc.latitude,myLoc.longitude), LatLng(poi.latitude,poi.longitude))
+
+                    if (distance_f < 1500) {
+                        textView_myLoc.text = "当前位置：" + name
+                        isNear = true
+                        textView_myLoc.setOnClickListener {
+                            val intent = Intent(act, PlaceInfoActivity::class.java)
+                            intent.putExtra("objectId",objectId)
+                            startActivity(intent) //启动地图界面
+                        }
+                    }
 
                     val distance = if (distance_f < 1000) {
                         val dFormat = DecimalFormat("0")
@@ -129,6 +140,9 @@ class MainActivity : AppCompatActivity() {
                     Log.d("DISTANCE",distance)
 
                     likeList.add(LocItem(objectId,name,desc,poi,distance))
+                }
+                if (!isNear) {
+                    nearPlace_layout.visibility = View.GONE
                 }
                 like_list.layoutManager = LinearLayoutManager(act,LinearLayoutManager.HORIZONTAL,false)
                 like_list.adapter = MainAdapter(likeList) {

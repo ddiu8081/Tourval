@@ -11,10 +11,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.avos.avoscloud.AVException
-import com.avos.avoscloud.AVObject
-import com.avos.avoscloud.AVQuery
-import com.avos.avoscloud.FindCallback
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper
 import com.qmuiteam.qmui.widget.QMUIFloatLayout
 import kotlinx.android.synthetic.main.activity_search.*
@@ -22,11 +18,12 @@ import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
 import java.util.*
 import android.support.v7.widget.DividerItemDecoration
-
-
+import com.avos.avoscloud.*
 
 
 class SearchActivity : AppCompatActivity() {
+
+    private val userId = AVUser.getCurrentUser().mobilePhoneNumber
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,24 +35,36 @@ class SearchActivity : AppCompatActivity() {
         history_search.gravity = Gravity.LEFT //floatLayout中子节点左对齐
         history_search.maxNumber = Int.MAX_VALUE
         history_search.maxLines = Integer.MAX_VALUE
-        addItemToFloatLayout(history_search,"好吃不贵")
-        addItemToFloatLayout(history_search,"好吃不贵")
-        addItemToFloatLayout(history_search,"好吃不贵")
-        addItemToFloatLayout(history_search,"好吃不贵")
-        addItemToFloatLayout(history_search,"贵")
-        addItemToFloatLayout(history_search,"好吃不贵")
-        addItemToFloatLayout(history_search,"好吃不贵")
-        addItemToFloatLayout(history_search,"好吃不贵")
+
+        initSearchHistory()
 
         btn_back.setOnClickListener {
             finish()
         }
+        btn_search.setOnClickListener {
+            val searchText = editText_search.text.toString()
+            search(searchText)
+        }
 
-        editText_search.setFocusable(true);
-        editText_search.setFocusableInTouchMode(true);
+        editText_search.isFocusable = true;
+        editText_search.isFocusableInTouchMode = true;
         editText_search.requestFocus()
 
 
+    }
+
+    private fun initSearchHistory() {
+        val query = AVQuery<AVObject>("SearchLog")
+        query.whereEqualTo("user", userId)
+        query.limit(10)
+        query.orderByDescending("createdAt")
+        query.findInBackground(object : FindCallback<AVObject>() {
+            override fun done(list:List<AVObject> , e: AVException?) {
+                for (avObject in list) {
+                    addItemToFloatLayout(history_search,avObject.getString("searchText"))
+                }
+            }
+        })
     }
 
     fun addItemToFloatLayout(floatLayout: QMUIFloatLayout, itemText:String) {
@@ -71,13 +80,20 @@ class SearchActivity : AppCompatActivity() {
         val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         floatLayout.addView(textView, layoutParams)//将textview添加到floatLayout布局中
         textView.setOnClickListener {
-            toast(textView.text)
+            search(itemText)
         }
     }
 
-    fun search(view: View) {
+    fun search(searchText: String) {
         val searchQueryList:MutableList<MainActivity.LocItem> = ArrayList ()
-        val searchText = editText_search.text.toString()
+
+        if (searchText != "") {
+            val fav = AVObject("SearchLog")// 构建对象
+            fav.put("user",userId) // 用户手机号
+            fav.put("searchText",searchText) // 搜索内容
+            fav.saveInBackground() // 保存到服务端
+        }
+
         val query = AVQuery<AVObject>("PlaceInfo")
         query.whereContains("name", searchText)
         query.findInBackground(object : FindCallback<AVObject>() {
@@ -99,6 +115,7 @@ class SearchActivity : AppCompatActivity() {
                     toast("没有结果")
                     historySearch_view.visibility = View.VISIBLE
                     searchResult_view.visibility = View.GONE
+                    initSearchHistory()
                 }
                 else {
                     toast("搜索到" + list.size + "条结果")
