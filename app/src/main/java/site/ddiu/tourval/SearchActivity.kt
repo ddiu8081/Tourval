@@ -1,5 +1,6 @@
 package site.ddiu.tourval
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -19,6 +20,14 @@ import org.jetbrains.anko.toast
 import java.util.*
 import android.support.v7.widget.DividerItemDecoration
 import com.avos.avoscloud.*
+import com.avos.avoscloud.AVException
+import com.avos.avoscloud.AVObject
+import com.avos.avoscloud.GetCallback
+import com.avos.avoscloud.AVQuery
+
+
+
+
 
 
 class SearchActivity : AppCompatActivity() {
@@ -54,6 +63,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initSearchHistory() {
+        history_search.removeAllViews()
+
         val query = AVQuery<AVObject>("SearchLog")
         query.whereEqualTo("user", userId)
         query.limit(10)
@@ -61,13 +72,13 @@ class SearchActivity : AppCompatActivity() {
         query.findInBackground(object : FindCallback<AVObject>() {
             override fun done(list:List<AVObject> , e: AVException?) {
                 for (avObject in list) {
-                    addItemToFloatLayout(history_search,avObject.getString("searchText"))
+                    addItemToFloatLayout(history_search,avObject.getString("searchText"),avObject.objectId)
                 }
             }
         })
     }
 
-    fun addItemToFloatLayout(floatLayout: QMUIFloatLayout, itemText:String) {
+    fun addItemToFloatLayout(floatLayout: QMUIFloatLayout, itemText:String, objcetId: String) {
         val currentChildCount = floatLayout.childCount
 
         //自定义textview样式
@@ -82,16 +93,43 @@ class SearchActivity : AppCompatActivity() {
         textView.setOnClickListener {
             search(itemText)
         }
+        textView.setOnLongClickListener {
+            val fetch = AVObject.createWithoutData("SearchLog", objcetId)
+            fetch.fetchInBackground(object : GetCallback<AVObject>() {
+                override fun done(avObject: AVObject?, e: AVException?) {
+
+                }
+            })
+            fetch.deleteInBackground(object : DeleteCallback() {
+                override fun done(e: AVException?) {
+                    initSearchHistory()
+                }
+            })
+            return@setOnLongClickListener true
+        }
     }
 
     fun search(searchText: String) {
         val searchQueryList:MutableList<MainActivity.LocItem> = ArrayList ()
 
         if (searchText != "") {
-            val fav = AVObject("SearchLog")// 构建对象
-            fav.put("user",userId) // 用户手机号
-            fav.put("searchText",searchText) // 搜索内容
-            fav.saveInBackground() // 保存到服务端
+            val query1: AVQuery<AVObject> = AVQuery("SearchLog")
+            query1.whereEqualTo("user", userId)
+            val query2: AVQuery<AVObject> = AVQuery("SearchLog")
+            query2.whereEqualTo("searchText", searchText)
+            val query = AVQuery.and(Arrays.asList(query1, query2))
+            query.getFirstInBackground(object : GetCallback<AVObject>() {
+                override fun done(avObject: AVObject?, e: AVException?) {
+                    if (avObject != null) {
+                        val fetch = AVObject.createWithoutData("SearchLog", avObject.objectId)
+                        fetch.deleteInBackground()
+                    }
+                    val fav = AVObject("SearchLog")// 构建对象
+                    fav.put("user",userId) // 用户手机号
+                    fav.put("searchText",searchText) // 搜索内容
+                    fav.saveInBackground() // 保存到服务端
+                }
+            })
         }
 
         val query = AVQuery<AVObject>("PlaceInfo")
@@ -115,6 +153,7 @@ class SearchActivity : AppCompatActivity() {
                     toast("没有结果")
                     historySearch_view.visibility = View.VISIBLE
                     searchResult_view.visibility = View.GONE
+
                     initSearchHistory()
                 }
                 else {

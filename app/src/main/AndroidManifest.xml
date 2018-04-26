@@ -55,20 +55,19 @@
             android:name="com.amap.api.v2.apikey"
             android:value="6b7b7f4a723d84f56e11721c6f6fb92d" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" />
+        <activity android:name=".MapActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".POIInfoActivity" />
+        <activity android:name=".PlaceInfoActivity" />
+        <activity android:name=".LoginActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MapActivity" />
-        <activity android:name=".LayoutTestActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".POIInfoActivity" />
-        <activity android:name=".PlaceInfoActivity" />
-        <activity android:name=".LoginActivity"
-            android:launchMode="singleTask" />
 
         <service android:name="com.amap.api.location.APSService" />
     </application>

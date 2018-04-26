@@ -98,7 +98,7 @@ class PlaceInfoActivity : AppCompatActivity() {
         query1.whereEqualTo("favId", thisObjectId)
         val query2: AVQuery<AVObject> = AVQuery("FavoriteLog")
         query2.whereEqualTo("user", userId)
-        val query = AVQuery.and(Arrays.asList(query1, query1))
+        val query = AVQuery.and(Arrays.asList(query1, query2))
         query.getFirstInBackground(object : GetCallback<AVObject>() {
             override fun done(avObject: AVObject?, e: AVException?) {
                 if (avObject != null) {

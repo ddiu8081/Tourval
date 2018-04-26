@@ -28,6 +28,18 @@ class LoginActivity : AppCompatActivity() {
 
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
+
+        // 用户检测
+        val currentUser = AVUser.getCurrentUser()
+        if (currentUser != null) {
+            // 跳转到首页
+            toast("已登录")
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent) //启动界面
+            finish()
+
+        }
+
         editText_phone.setOnClickListener {
             if(isSentCode) {
                 // 更改按钮文字

@@ -44,18 +44,6 @@ class MainActivity : AppCompatActivity() {
             Log.i("kPermission", "permission---$it")
         })
 
-        // 用户检测
-        val currentUser = AVUser.getCurrentUser()
-        if (currentUser != null) {
-            // 跳转到首页
-            toast("已登录")
-        } else {
-            //缓存用户对象为空时，可打开用户注册界面…
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.putExtra("data","This is from MainActivity.")
-            startActivity(intent) //启动界面
-        }
-
         GdLocation.getCurrentLocation {
             Log.d("GaodeLocation",it.address)
             val myLoc = it
@@ -101,6 +89,13 @@ class MainActivity : AppCompatActivity() {
         val likeList:MutableList<LocItem> = ArrayList ()
         var isNear = false
 
+        like_list.layoutManager = LinearLayoutManager(act,LinearLayoutManager.HORIZONTAL,false)
+        like_list.adapter = MainAdapter(likeList) {
+            val intent = Intent(act, PlaceInfoActivity::class.java)
+            intent.putExtra("objectId",it.objectId)
+            startActivity(intent) //启动地图界面
+        }
+
         // 查询
         val query: AVQuery<AVObject> = AVQuery("PlaceInfo")
         query.whereNotEqualTo("name", "111")
@@ -144,12 +139,7 @@ class MainActivity : AppCompatActivity() {
                 if (!isNear) {
                     nearPlace_layout.visibility = View.GONE
                 }
-                like_list.layoutManager = LinearLayoutManager(act,LinearLayoutManager.HORIZONTAL,false)
-                like_list.adapter = MainAdapter(likeList) {
-                    val intent = Intent(act, PlaceInfoActivity::class.java)
-                    intent.putExtra("objectId",it.objectId)
-                    startActivity(intent) //启动地图界面
-                }
+
             }
         })
 
