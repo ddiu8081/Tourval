@@ -34,7 +34,6 @@ class MapActivity : AppCompatActivity() {
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
 
-        val intent = intent
         val objectId = intent.getStringExtra("objectId")
 
 

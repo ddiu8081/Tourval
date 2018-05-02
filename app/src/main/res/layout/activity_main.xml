@@ -48,7 +48,6 @@
             android:layout_height="50dp"
             android:alpha="1.0"
             android:background="@color/qmui_config_color_white"
-            android:onClick="switchSearch"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

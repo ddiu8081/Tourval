@@ -28,8 +28,7 @@ public class MyApplication extends Application {
         // 放在 SDK 初始化语句 AVOSCloud.initialize() 后面，只需要调用一次即可
         AVOSCloud.setDebugLogEnabled(true);
 
-        // 初始化高德定位
-        GdLocation.init(this);
+
 
     }
 

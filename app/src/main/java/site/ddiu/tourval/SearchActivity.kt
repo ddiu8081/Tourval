@@ -41,6 +41,8 @@ class SearchActivity : AppCompatActivity() {
         QMUIStatusBarHelper.translucent(this) //沉浸化状态栏
         QMUIStatusBarHelper.setStatusBarLightMode(act) //设置状态栏黑色字体图标
 
+        val tagId = intent.getIntExtra("tagId",0)
+
         history_search.gravity = Gravity.LEFT //floatLayout中子节点左对齐
         history_search.maxNumber = Int.MAX_VALUE
         history_search.maxLines = Integer.MAX_VALUE
@@ -55,10 +57,14 @@ class SearchActivity : AppCompatActivity() {
             search(searchText)
         }
 
-        editText_search.isFocusable = true;
-        editText_search.isFocusableInTouchMode = true;
-        editText_search.requestFocus()
-
+        if (tagId > 0) {
+            searchTag(tagId)
+        }
+        else {
+            editText_search.isFocusable = true
+            editText_search.isFocusableInTouchMode = true
+            editText_search.requestFocus()
+        }
 
     }
 
@@ -134,6 +140,49 @@ class SearchActivity : AppCompatActivity() {
 
         val query = AVQuery<AVObject>("PlaceInfo")
         query.whereContains("name", searchText)
+        query.findInBackground(object : FindCallback<AVObject>() {
+            override fun done(list:List<AVObject> , e: AVException?) {
+                for (avObject in list) {
+                    val objectId = avObject.objectId
+                    val name = avObject.getString("name")
+                    val desc = avObject.getString("desc")
+                    val poi = avObject.getAVGeoPoint("location")
+                    val distance = ""
+
+                    Log.d("OBJECTID",objectId)
+                    Log.d("NAME",name)
+                    Log.d("DESC",desc)
+
+                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, distance))
+                }
+                if (list.isEmpty()) {
+                    toast("没有结果")
+                    historySearch_view.visibility = View.VISIBLE
+                    searchResult_view.visibility = View.GONE
+
+                    initSearchHistory()
+                }
+                else {
+                    toast("搜索到" + list.size + "条结果")
+                    historySearch_view.visibility = View.GONE
+                    searchResult_view.visibility = View.VISIBLE
+                }
+                searchResult_list.layoutManager = LinearLayoutManager(act, LinearLayoutManager.VERTICAL,false)
+                searchResult_list.adapter = SearchResultAdapter(searchQueryList) {
+                    val intent = Intent(act, PlaceInfoActivity::class.java)
+                    intent.putExtra("objectId",it.objectId)
+                    startActivity(intent) //启动地图界面
+                }
+                searchResult_list.addItemDecoration(DividerItemDecoration(act, DividerItemDecoration.VERTICAL))
+            }
+        })
+    }
+
+    fun searchTag(tagId: Int) {
+        val searchQueryList:MutableList<MainActivity.LocItem> = ArrayList ()
+
+        val query = AVQuery<AVObject>("PlaceInfo")
+        query.whereEqualTo("tags", tagId)
         query.findInBackground(object : FindCallback<AVObject>() {
             override fun done(list:List<AVObject> , e: AVException?) {
                 for (avObject in list) {

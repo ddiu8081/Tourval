@@ -29,6 +29,7 @@ import java.text.DecimalFormat
 class MainActivity : AppCompatActivity() {
 
     data class LocItem(val objectId: String, val name: String, val desc: String, val location: AVGeoPoint, val distance: String)
+    val likeList:MutableList<LocItem> = ArrayList ()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,19 +45,36 @@ class MainActivity : AppCompatActivity() {
             Log.i("kPermission", "permission---$it")
         })
 
+        initTags() // 初始化 热门标签 栏目
+
+        search_bar.setOnClickListener {
+            switchSearch(0)
+        }
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        like_list.layoutManager = LinearLayoutManager(act,LinearLayoutManager.HORIZONTAL,false)
+        like_list.adapter = MainAdapter(likeList) {
+            val intent = Intent(act, PlaceInfoActivity::class.java)
+            intent.putExtra("objectId",it.objectId)
+            startActivity(intent) //启动地图界面
+        }
+
+        // 初始化高德定位
+        GdLocation.init(this)
         GdLocation.getCurrentLocation {
             Log.d("GaodeLocation",it.address)
             val myLoc = it
             initLike(myLoc) // 初始化 猜你喜欢 栏目
 //            textView_myLoc.text = "当前位置：" + it.address
         }
-
-        initTags() // 初始化 热门标签 栏目
-
-
     }
 
-    private fun addItemToFloatLayout(floatLayout:QMUIFloatLayout, itemText:String) {
+    private fun addItemToFloatLayout(floatLayout:QMUIFloatLayout, itemId:Int, itemText:String) {
         val currentChildCount = floatLayout.childCount
 
         //自定义textview样式
@@ -69,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         val layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         floatLayout.addView(textView, layoutParams)//将textview添加到floatLayout布局中
         textView.setOnClickListener {
-            toast(textView.text)
+            switchSearch(itemId)
         }
     }
 
@@ -77,28 +95,23 @@ class MainActivity : AppCompatActivity() {
         qmuidemo_floatlayout.gravity = Gravity.LEFT //floatLayout中子节点左对齐
         qmuidemo_floatlayout.maxNumber = Int.MAX_VALUE
         qmuidemo_floatlayout.maxLines = Integer.MAX_VALUE
-        addItemToFloatLayout(qmuidemo_floatlayout,"地铁沿线")
-        addItemToFloatLayout(qmuidemo_floatlayout,"山水")
-        addItemToFloatLayout(qmuidemo_floatlayout,"自然")
-        addItemToFloatLayout(qmuidemo_floatlayout,"人文")
-        addItemToFloatLayout(qmuidemo_floatlayout,"历史")
-        addItemToFloatLayout(qmuidemo_floatlayout,"春游景点")
+
+        // 查询
+        val query: AVQuery<AVObject> = AVQuery("TagInfo")
+        query.findInBackground(object : FindCallback<AVObject>() {
+            override fun done(list:List<AVObject>, e: AVException?) {
+                for (avObject in list) {
+                    addItemToFloatLayout(qmuidemo_floatlayout,avObject.getInt("tagId"),avObject.getString("tagName"))
+                }
+            }
+        })
     }
 
     private fun initLike (myLoc: AMapLocation) {
-        val likeList:MutableList<LocItem> = ArrayList ()
         var isNear = false
-
-        like_list.layoutManager = LinearLayoutManager(act,LinearLayoutManager.HORIZONTAL,false)
-        like_list.adapter = MainAdapter(likeList) {
-            val intent = Intent(act, PlaceInfoActivity::class.java)
-            intent.putExtra("objectId",it.objectId)
-            startActivity(intent) //启动地图界面
-        }
 
         // 查询
         val query: AVQuery<AVObject> = AVQuery("PlaceInfo")
-        query.whereNotEqualTo("name", "111")
         query.findInBackground(object : FindCallback<AVObject>() {
             override fun done(list:List<AVObject>, e: AVException?) {
                 for (avObject in list) {
@@ -110,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                     val distance_f = AMapUtils.calculateLineDistance(LatLng(myLoc.latitude,myLoc.longitude), LatLng(poi.latitude,poi.longitude))
 
                     if (distance_f < 1500) {
+                        nearPlace_layout.visibility = View.VISIBLE
                         textView_myLoc.text = "当前位置：" + name
                         isNear = true
                         textView_myLoc.setOnClickListener {
@@ -145,8 +159,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun switchSearch(view: View) {
+    private fun switchSearch(tagId: Int) {
         val intent = Intent(this, SearchActivity::class.java)
+        intent.putExtra("tagId", tagId)
         startActivity(intent) //启动地图界面
     }
 
