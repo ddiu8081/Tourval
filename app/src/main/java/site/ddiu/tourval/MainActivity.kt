@@ -28,7 +28,7 @@ import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
 
-    data class LocItem(val objectId: String, val name: String, val desc: String, val location: AVGeoPoint, val distance: String)
+    data class LocItem(val objectId: String, val name: String, val desc: String, val location: AVGeoPoint, val imgSrc: String, val distance: String)
     val likeList:MutableList<LocItem> = ArrayList ()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLike (myLoc: AMapLocation) {
         var isNear = false
+        likeList.clear()
 
         // 查询
         val query: AVQuery<AVObject> = AVQuery("PlaceInfo")
@@ -118,6 +119,7 @@ class MainActivity : AppCompatActivity() {
                     val objectId = avObject.objectId
                     val name = avObject.getString("name")
                     val desc = avObject.getString("desc")
+                    val imgSrc = avObject.getString("imgSrc")
                     val poi = avObject.getAVGeoPoint("location")
 //                    val distance = "12345"
                     val distance_f = AMapUtils.calculateLineDistance(LatLng(myLoc.latitude,myLoc.longitude), LatLng(poi.latitude,poi.longitude))
@@ -148,7 +150,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("MYLOC",myLoc.poiName)
                     Log.d("DISTANCE",distance)
 
-                    likeList.add(LocItem(objectId,name,desc,poi,distance))
+                    likeList.add(LocItem(objectId,name,desc,poi,imgSrc,distance))
                 }
                 if (!isNear) {
                     nearPlace_layout.visibility = View.GONE

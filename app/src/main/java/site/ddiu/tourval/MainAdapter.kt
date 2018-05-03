@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_view_item.view.*
 
 class MainAdapter(val items : List<MainActivity.LocItem>, private val itemClickListener: (MainActivity.LocItem)->Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
@@ -23,6 +24,7 @@ class MainAdapter(val items : List<MainActivity.LocItem>, private val itemClickL
         fun bind(item: MainActivity.LocItem) {
             view.loc_title.text = item.name
             view.loc_desc.text = item.distance
+            Picasso.get().load(item.imgSrc).placeholder(R.drawable.nopic).into(view.imageView_imgSrc)
             view.setOnClickListener {
                 itemClickListener(item)
             }

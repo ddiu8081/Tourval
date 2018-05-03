@@ -146,6 +146,7 @@ class SearchActivity : AppCompatActivity() {
                     val objectId = avObject.objectId
                     val name = avObject.getString("name")
                     val desc = avObject.getString("desc")
+                    val imgSrc = avObject.getString("imgSrc")
                     val poi = avObject.getAVGeoPoint("location")
                     val distance = ""
 
@@ -153,7 +154,7 @@ class SearchActivity : AppCompatActivity() {
                     Log.d("NAME",name)
                     Log.d("DESC",desc)
 
-                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, distance))
+                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, imgSrc, distance))
                 }
                 if (list.isEmpty()) {
                     toast("没有结果")
@@ -189,6 +190,7 @@ class SearchActivity : AppCompatActivity() {
                     val objectId = avObject.objectId
                     val name = avObject.getString("name")
                     val desc = avObject.getString("desc")
+                    val imgSrc = avObject.getString("imgSrc")
                     val poi = avObject.getAVGeoPoint("location")
                     val distance = ""
 
@@ -196,7 +198,7 @@ class SearchActivity : AppCompatActivity() {
                     Log.d("NAME",name)
                     Log.d("DESC",desc)
 
-                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, distance))
+                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, imgSrc, distance))
                 }
                 if (list.isEmpty()) {
                     toast("没有结果")

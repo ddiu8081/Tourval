@@ -8,15 +8,25 @@
     android:gravity="center">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageView_imgSrc"
         android:layout_width="0dp"
         android:layout_height="120dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="#22ffc408"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView_blackbg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#33000000"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_imgSrc"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_imgSrc"
+        app:layout_constraintStart_toStartOf="@+id/imageView_imgSrc"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -26,9 +36,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="TITLE"
+        android:textColor="#ffffff"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_imgSrc"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -36,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:textColor="#ffffff"
         android:text="This is the description."
         app:layout_constraintEnd_toEndOf="@+id/loc_title"
         app:layout_constraintStart_toStartOf="@+id/loc_title"
