@@ -13,12 +13,16 @@ import kotlinx.android.synthetic.main.activity_place_info.*
 import org.jetbrains.anko.act
 import org.jetbrains.anko.toast
 import java.util.*
+import com.avos.avoscloud.AVException
+
+
 
 
 class PlaceInfoActivity : AppCompatActivity() {
 
     private var objectId = ""
     private val userId = AVUser.getCurrentUser().mobilePhoneNumber
+    private val userObjectId = AVUser.getCurrentUser().objectId
     var favLogId = ""
     var isFav = false
 
@@ -62,12 +66,18 @@ class PlaceInfoActivity : AppCompatActivity() {
             // 用户已经收藏，进行取消收藏操作
             if (favLogId != "") {
                 val fav = AVObject.createWithoutData("FavoriteLog", favLogId)
-                fav.put("isFav", false)
-                fav.saveInBackground()
-
-                isFav = false
-                btn_isFavPlace.text = "收藏"
-                btn_isFavPlace.setBackgroundColor(Color.parseColor("#eeffc408"))
+                fav.deleteInBackground(object : DeleteCallback() {
+                    override fun done(e: AVException?) {
+                        if (e == null) {
+                            isFav = false
+                            btn_isFavPlace.text = "收藏"
+                            btn_isFavPlace.setBackgroundColor(Color.parseColor("#eeffc408"))
+                            toast("已取消收藏")
+                        } else {
+                            toast("错误")
+                        }
+                    }
+                })
             }
             else {
                 toast("失败")
@@ -77,20 +87,26 @@ class PlaceInfoActivity : AppCompatActivity() {
         else {
             // 用户没有收藏，进行收藏操作
 
-            val fav = AVObject.createWithoutData("FavoriteLog",favLogId)// 构建对象
+            val fav = AVObject("FavoriteLog")
             fav.put("type", 1) // 设置类型，1为place，2为POI
             fav.put("favId", objectId) // 景点id
             fav.put("user",userId) // 用户手机号
-            fav.put("isFav",true) // 是否收藏
-            fav.saveInBackground() // 保存到服务端
-
-            isFav = true
-            btn_isFavPlace.text = "已收藏"
-            btn_isFavPlace.setBackgroundColor(Color.parseColor("#666666"))
+            fav.put("userObjectId",userObjectId) // 用户objectId
+            fav.isFetchWhenSave = true
+            fav.saveInBackground(object : SaveCallback() {
+                override fun done(e: AVException?) {
+                    if (e == null) {
+                        isFav = true
+                        favLogId = fav.objectId
+                        btn_isFavPlace.text = "已收藏"
+                        btn_isFavPlace.setBackgroundColor(Color.parseColor("#666666"))
+                        toast("已收藏")
+                    } else {
+                        toast("错误")
+                    }
+                }
+            })
         }
-
-        getFavoriteState(objectId, userId)
-
     }
 
     private fun getFavoriteState (thisObjectId: String, userId: String) {
@@ -104,12 +120,9 @@ class PlaceInfoActivity : AppCompatActivity() {
                 if (avObject != null) {
                     favLogId = avObject.objectId
                     Log.d("favLogId",favLogId)
-                    Log.d("返回的状态",avObject.getBoolean("isFav").toString())
-                    if (avObject.getBoolean("isFav")) {
-                        isFav = true
-                        btn_isFavPlace.text = "已收藏"
-                        btn_isFavPlace.setBackgroundColor(Color.parseColor("#666666"))
-                    }
+                    isFav = true
+                    btn_isFavPlace.text = "已收藏"
+                    btn_isFavPlace.setBackgroundColor(Color.parseColor("#666666"))
                 }
                 else {
                     isFav = false

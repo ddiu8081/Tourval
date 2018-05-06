@@ -24,6 +24,10 @@ import java.util.*
 import com.amap.api.maps.AMapUtils
 import com.amap.api.maps.model.LatLng
 import java.text.DecimalFormat
+import com.avos.avoscloud.AVException
+import com.avos.avoscloud.FunctionCallback
+import com.avos.avoscloud.AVCloud
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +49,9 @@ class MainActivity : AppCompatActivity() {
             Log.i("kPermission", "permission---$it")
         })
 
+        // 定位工具初始化
+        GDLocationUtil.init(this)
+
         initTags() // 初始化 热门标签 栏目
 
         search_bar.setOnClickListener {
@@ -64,14 +71,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent) //启动地图界面
         }
 
-        // 初始化高德定位
-        GdLocation.init(this)
-        GdLocation.getCurrentLocation {
+        // 获取定位
+        Log.d("onStart","获取定位")
+        GDLocationUtil.getCurrentLocation {
             Log.d("GaodeLocation",it.address)
             val myLoc = it
             initLike(myLoc) // 初始化 猜你喜欢 栏目
-//            textView_myLoc.text = "当前位置：" + it.address
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        GDLocationUtil.destroy()
     }
 
     private fun addItemToFloatLayout(floatLayout:QMUIFloatLayout, itemId:Int, itemText:String) {
@@ -110,6 +121,25 @@ class MainActivity : AppCompatActivity() {
     private fun initLike (myLoc: AMapLocation) {
         var isNear = false
         likeList.clear()
+
+        // 构建参数
+        val dicParameters = HashMap<String, String>()
+        dicParameters["movie"] = "夏洛特烦恼"
+
+        // 调用云函数 averageStars
+        AVCloud.callFunctionInBackground<Any>("getLikeList", dicParameters, object : FunctionCallback<Any>() {
+            override fun done(data: Any?, e: AVException?) {
+                if (e == null) {
+                    // 处理返回结果
+                    Log.d("推荐列表return",data.toString())
+                    toast("ok")
+
+                } else {
+                    // 处理报错
+                    toast("拉取推荐列表错误")
+                }
+            }
+        })
 
         // 查询
         val query: AVQuery<AVObject> = AVQuery("PlaceInfo")
