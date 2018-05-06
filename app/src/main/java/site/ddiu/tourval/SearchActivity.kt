@@ -25,11 +25,6 @@ import com.avos.avoscloud.AVObject
 import com.avos.avoscloud.GetCallback
 import com.avos.avoscloud.AVQuery
 
-
-
-
-
-
 class SearchActivity : AppCompatActivity() {
 
     private val userId = AVUser.getCurrentUser().mobilePhoneNumber
