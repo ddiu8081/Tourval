@@ -149,7 +149,7 @@ class SearchActivity : AppCompatActivity() {
                     Log.d("NAME",name)
                     Log.d("DESC",desc)
 
-                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, imgSrc, distance))
+                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, imgSrc, distance,0.0f))
                 }
                 if (list.isEmpty()) {
                     toast("没有结果")
@@ -193,7 +193,7 @@ class SearchActivity : AppCompatActivity() {
                     Log.d("NAME",name)
                     Log.d("DESC",desc)
 
-                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, imgSrc, distance))
+                    searchQueryList.add(MainActivity.LocItem(objectId, name, desc, poi, imgSrc, distance,0.0f))
                 }
                 if (list.isEmpty()) {
                     toast("没有结果")

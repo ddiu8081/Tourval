@@ -27,13 +27,14 @@ import java.text.DecimalFormat
 import com.avos.avoscloud.AVException
 import com.avos.avoscloud.FunctionCallback
 import com.avos.avoscloud.AVCloud
+import java.math.BigDecimal
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
 class MainActivity : AppCompatActivity() {
 
-    data class LocItem(val objectId: String, val name: String, val desc: String, val location: AVGeoPoint, val imgSrc: String, val distance: String)
-    data class LocItemMin(val objectId: String, val name: String, val location: AVGeoPoint, val imgSrc: String, val distance: String)
+    data class LocItem(val objectId: String, val name: String, val desc: String, val location: AVGeoPoint, val imgSrc: String, val distance: String, val similarity: Float)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
         Log.d("MainActivity","onStart")
 
-        var likeList:MutableList<LocItemMin> = ArrayList ()
+        val likeList:MutableList<LocItem> = ArrayList ()
 
         // 定位工具初始化
         GDLocationUtil.init(this)
@@ -123,7 +124,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun initLike (myLoc: AMapLocation, likeList: MutableList<LocItemMin>) {
+    private fun initLike (myLoc: AMapLocation, likeList: MutableList<LocItem>) {
         var isNear = false
 
         // 构建参数
@@ -136,13 +137,13 @@ class MainActivity : AppCompatActivity() {
 //
 //            }
 //        })
-        AVCloud.callFunctionInBackground("getLikeList", dicParameters, object : FunctionCallback<Iterable<HashMap<String, Any>>>() {
-            override fun done(data: Iterable<HashMap<String, Any>>?, e: AVException?) {
+        AVCloud.callFunctionInBackground("getLikeList", dicParameters, object : FunctionCallback<ArrayList<HashMap<String, Any>>>() {
+            override fun done(data: ArrayList<HashMap<String, Any>>?, e: AVException?) {
                 if (e == null) {
                     // 处理返回结果
                     Log.d("avObject in likeList",data.toString())
-                    toast("ok")
                     if (data != null) {
+                        var i = 0
                         data.forEach {
                             Log.d("avObject in key",it.toString())
 
@@ -150,6 +151,8 @@ class MainActivity : AppCompatActivity() {
                             val name = it["name"] as String
                             val imgSrc = it["imgSrc"] as String
                             val poi= it["location"] as AVGeoPoint
+                            val similarity= it["similarity"] as BigDecimal
+                            val similarity_f = similarity.toFloat()
                             val distance_f = AMapUtils.calculateLineDistance(LatLng(myLoc.latitude,myLoc.longitude), LatLng(poi.latitude,poi.longitude))
 
                             if (distance_f < 1500) {
@@ -177,7 +180,14 @@ class MainActivity : AppCompatActivity() {
                             Log.d("MYLOC",myLoc.poiName)
                             Log.d("DISTANCE",distance)
 
-                            likeList.add(LocItemMin(objectId,name,poi,imgSrc,distance))
+                            if (i < 5) {
+                                likeList.add(LocItem(objectId,name,"",poi,imgSrc,distance, similarity_f))
+                            }
+                            i++
+                        }
+                        toast("为您推荐5个景点")
+                        if (!isNear) {
+                            nearPlace_layout.visibility = View.GONE
                         }
                     }
 
@@ -187,7 +197,6 @@ class MainActivity : AppCompatActivity() {
                     Log.d("avObject in error",e.toString())
                 }
             }
-
         })
 
         // 查询
@@ -231,9 +240,7 @@ class MainActivity : AppCompatActivity() {
 //
 //                    likeList.add(LocItemMin(objectId,name,poi,imgSrc,distance))
 //                }
-//                if (!isNear) {
-//                    nearPlace_layout.visibility = View.GONE
-//                }
+//
 //
 //            }
 //        })
@@ -243,6 +250,11 @@ class MainActivity : AppCompatActivity() {
     private fun switchSearch(tagId: Int) {
         val intent = Intent(this, SearchActivity::class.java)
         intent.putExtra("tagId", tagId)
+        startActivity(intent) //启动地图界面
+    }
+
+    fun switchLikeList(view: View) {
+        val intent = Intent(this, AllLikeListActivity::class.java)
         startActivity(intent) //启动地图界面
     }
 

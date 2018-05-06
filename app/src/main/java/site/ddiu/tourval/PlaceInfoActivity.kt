@@ -37,7 +37,6 @@ class PlaceInfoActivity : AppCompatActivity() {
             finish()
         }
 
-        val intent = intent
         objectId = intent.getStringExtra("objectId")
 
 

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.list_view_item.view.*
 
-class MainAdapter(val items : List<MainActivity.LocItemMin>, private val itemClickListener: (MainActivity.LocItemMin)->Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+class MainAdapter(val items : List<MainActivity.LocItem>, private val itemClickListener: (MainActivity.LocItem)->Unit) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_view_item, parent, false)
@@ -20,8 +20,8 @@ class MainAdapter(val items : List<MainActivity.LocItemMin>, private val itemCli
         holder.bind(items[position])
     }
 
-    class ViewHolder(val view: View, private val itemClickListener: (MainActivity.LocItemMin) -> Unit) : RecyclerView.ViewHolder(view) {
-        fun bind(item: MainActivity.LocItemMin) {
+    class ViewHolder(val view: View, private val itemClickListener: (MainActivity.LocItem) -> Unit) : RecyclerView.ViewHolder(view) {
+        fun bind(item: MainActivity.LocItem) {
             view.loc_title.text = item.name
             view.loc_desc.text = item.distance
             Picasso.get().load(item.imgSrc).placeholder(R.drawable.nopic).into(view.imageView_imgSrc)
