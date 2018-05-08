@@ -104,23 +104,30 @@
 
     </LinearLayout>
 
-    <com.dd.ShadowLayout
+    <ScrollView
         android:id="@+id/searchResult_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/historySearch_view"
-        app:sl_shadowColor="#22ffc408"
-        app:sl_shadowRadius="16dp">
+        app:layout_constraintTop_toTopOf="@+id/historySearch_view">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/searchResult_list"
+        <com.dd.ShadowLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </com.dd.ShadowLayout>
+            android:layout_height="wrap_content"
+            app:sl_shadowColor="#22ffc408"
+            app:sl_shadowRadius="16dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/searchResult_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.dd.ShadowLayout>
+    </ScrollView>
+
 
 </android.support.constraint.ConstraintLayout>
