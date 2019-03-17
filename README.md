@@ -18,9 +18,9 @@
 
 ## 截图
 
-![](http://ostfcwjy3.bkt.clouddn.com/18-6-14/59704928.jpg)
+![](http://cloud.ddiu.site/18-6-14/59704928.jpg)
 
-![](http://ostfcwjy3.bkt.clouddn.com/18-6-14/74724950.jpg)
+![](http://cloud.ddiu.site/18-6-14/74724950.jpg)
 
 
 
@@ -28,7 +28,7 @@
 
 关于数据库的构建，我们构建了以下关系图。
 
-![](http://ostfcwjy3.bkt.clouddn.com/18-6-14/71189005.jpg)
+![](http://cloud.ddiu.site/18-6-14/71189005.jpg)
 
 ### 用户表 User
 
